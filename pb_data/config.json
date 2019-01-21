@@ -1,0 +1,10 @@
+{
+    "devid": "",
+    "ltoken": "",
+    "prefix": "!pb_",
+    "youtube_options": {
+        "maxResults": 10,
+        "key": "",
+        "type": "video"
+    }
+}

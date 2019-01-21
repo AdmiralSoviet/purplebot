@@ -1,0 +1,31 @@
+{
+  "name": "purplebot",
+  "version": "1.0.0",
+  "description": "A discord bot written in Node.js",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdmiralSoviet/purplebot.git"
+  },
+  "keywords": [
+    "Discord",
+    "purple",
+    "bot"
+  ],
+  "author": "AdmiralSoviet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AdmiralSoviet/purplebot/issues"
+  },
+  "homepage": "https://github.com/AdmiralSoviet/purplebot#readme",
+  "dependencies": {
+    "discord.js": "latest",
+    "fs": "latest",
+    "ytdl-core": "latest",
+    "youtube-search": "latest"
+  },
+  "devDependencies": {}
+}
