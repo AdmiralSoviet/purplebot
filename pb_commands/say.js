@@ -5,6 +5,7 @@ const cmd = {
     category: "General",
     desc: "Makes the bot echo what the user says.",
     usage: "say <arg>",
+    hidden: false,
     modonly: true,
     devonly: false,
     exec: function (opts = {}) {

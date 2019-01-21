@@ -5,6 +5,7 @@ const cmd = {
     category: "General",
     desc: "Prints a list of commands!",
     usage: "help",
+    hidden: false,
     modonly: false,
     devonly: false,
     exec: function (opts = {}) {
@@ -25,7 +26,9 @@ const cmd = {
                     helplist[cmd_list[property].category].setThumbnail(client.user.avatarURL);
                     helplist[cmd_list[property].category].setTimestamp();
                 }
-                helplist[cmd_list[property].category].addField(config.prefix + cmd_list[property].usage, cmd_list[property].desc);
+                if (!cmd_list[property].hidden) {
+                    helplist[cmd_list[property].category].addField(config.prefix + cmd_list[property].usage, cmd_list[property].desc);
+                }
             }
         }
         for (let property in helplist) {

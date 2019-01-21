@@ -5,6 +5,7 @@ const cmd = {
     category: "General",
     desc: "Shows some useful stats such as the number of servers running and the current uptime.",
     usage: "stats",
+    hidden: false,
     modonly: false,
     devonly: false,
     exec: function (opts = {}) {
