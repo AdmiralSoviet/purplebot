@@ -111,19 +111,26 @@ client.on("messageDelete", (msg) => {
 
 // base logging and core command detection
 client.on("message", (msg) => {
+    if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
+        purplelog.log(`${msg.author.username}: ${msg.content}`);
     console.log(`[${msg.channel.name}/${msg.channel.id}] ${msg.author.username}: ${msg.content}`);
     if (msg.embeds) {
         msg.embeds.forEach((x) => {
             console.log(`[EMBED] ${x.title}`);
+            if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
+                purplelog.log(`[EMBED] ${x.title}`);
         });
     }
     if (msg.attachments) {
         msg.attachments.tap((a) => {
             console.log(`[ATTACHMENT/${msg.author.username}] ${a.url}`)
+            if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
+                purplelog.log(`[ATTACHMENT] ${a.url}`);
         });
     }
     // command processing
     if (msg.content.startsWith(config.prefix)) {
+        purplelog.log(`\nServer: ${(msg.guild) ? msg.guild.name : "DM Channel"} | Channel: ${msg.channel.name} | Timestamp: ${new Date().toLocaleString('en-GB')}\n${msg.author.username}: ${msg.content}`); // if a user runs a bot command, log that.
         Purple.processCmd(msg);
     }
 });
