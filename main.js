@@ -102,35 +102,35 @@ const Purple = (() => {
 
 // bot has successfully logged into discord
 client.on("ready", () => {
-    console.log(`[LOGIN] ${client.user.username} is now online...\n`)
+    purplelog.log(`[LOGIN] ${new Date().toLocaleString('en-GB')}: ${client.user.username} is now online...`, undefined, false)
 });
 
 client.on("messageDelete", (msg) => {
-    console.log(`[MESSAGE] Message '${msg.content}' by ${msg.author.username} deleted.`);
+    purplelog.log(`\nServer: ${(msg.guild) ? msg.guild.name : "DM Channel"} | Channel: ${msg.channel.name} | Timestamp: ${new Date().toLocaleString('en-GB')}\n[MESSAGE] Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
 });
 
 // base logging and core command detection
 client.on("message", (msg) => {
     if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-        purplelog.log(`${msg.author.username}: ${msg.content}`);
+        purplelog.log(`${msg.author.username}: ${msg.content}`, msg.guild);
     console.log(`[${msg.channel.name}/${msg.channel.id}] ${msg.author.username}: ${msg.content}`);
     if (msg.embeds) {
         msg.embeds.forEach((x) => {
             console.log(`[EMBED] ${x.title}`);
             if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-                purplelog.log(`[EMBED] ${x.title}`);
+                purplelog.log(`[EMBED] ${x.title}`, msg.guild);
         });
     }
     if (msg.attachments) {
         msg.attachments.tap((a) => {
             console.log(`[ATTACHMENT/${msg.author.username}] ${a.url}`)
             if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-                purplelog.log(`[ATTACHMENT] ${a.url}`);
+                purplelog.log(`[ATTACHMENT] ${a.url}`, msg.guild);
         });
     }
     // command processing
     if (msg.content.startsWith(config.prefix)) {
-        purplelog.log(`\nServer: ${(msg.guild) ? msg.guild.name : "DM Channel"} | Channel: ${msg.channel.name} | Timestamp: ${new Date().toLocaleString('en-GB')}\n${msg.author.username}: ${msg.content}`); // if a user runs a bot command, log that.
+        purplelog.log(`\nServer: ${(msg.guild) ? msg.guild.name : "DM Channel"} | Channel: ${msg.channel.name} | Timestamp: ${new Date().toLocaleString('en-GB')}\n${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
         Purple.processCmd(msg);
     }
 });

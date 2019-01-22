@@ -10,7 +10,7 @@ const purplelog = (() => {
 
     class prologue {
         // base log command. Basically just console.log() except it logs to a file.
-        log(content, server) {
+        log(content, server, mute = true) {
             if (server) {
                 server.name = server.name.replace(":", " ");
                 fs.appendFile(`${__dirname}/pb_data/logs/pbot_${server.id}_${server.name}.log`, content + "\n", (err) => {
@@ -20,6 +20,9 @@ const purplelog = (() => {
             fs.appendFile(__dirname + '/pb_data/logs/purplelog.log', content + "\n", (err) => {
                 if (err) throw err;
             });
+            if(!mute){
+                console.log(content);
+            }
         }
     }
     return new prologue();
