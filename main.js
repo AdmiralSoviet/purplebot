@@ -7,10 +7,29 @@ const config = require("./pb_data/config");
 const client = new Discord.Client();
 
 const Purple = (() => {
+    function retrieveStorageObj() {
+        fs.exists("./pb_data/storage.json", (exists) => {
+            if (!exists) {
+                // write inital data if storage.json doesn't exist
+                fs.writeFile("./pb_data/storage.json", `{"questions":[],"quotes":[],"guilds":{}}`, {
+                    flag: 'wx'
+                }, (e) => {
+                    if (e) throw err;
+                    console.log("[STATUS] storage.json created!");
+                    return require("./pb_data/storage.json");
+                });
+            } else{
+                return require("./pb_data/storage.json")
+            }
+        });
+    }
+
     class purpleBase {
         constructor() {
+            // generate command list
             let commandList = fs.readdirSync("./pb_commands");
             this.commands = {};
+            this.pb_storage = retrieveStorageObj();
             for (let key of commandList) {
                 try {
                     let cmd = require(`./pb_commands/${key}`);
