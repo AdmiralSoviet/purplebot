@@ -91,7 +91,7 @@ const Purple = (() => {
                 content_clean: cmdArgs.contentsaid,
                 content_args: cmdArgs.args,
                 cmd_list: this.commands,
-                purple_tools: this
+                purple: this
             }); // execute the function
         }
     };
