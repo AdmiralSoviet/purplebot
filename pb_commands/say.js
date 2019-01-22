@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 const cmd = {
     name: "say",
-    category: "General",
+    category: "Entertainment",
     desc: "Makes the bot echo what the user says.",
     usage: "say <arg>",
     hidden: false,
