@@ -18,7 +18,7 @@ const Purple = (() => {
                     console.log("[STATUS] storage.json created!");
                     return require("./pb_data/storage.json");
                 });
-            } else{
+            } else {
                 return require("./pb_data/storage.json")
             }
         });
@@ -28,8 +28,8 @@ const Purple = (() => {
         constructor() {
             // generate command list
             let commandList = fs.readdirSync("./pb_commands");
+            this.pb_storage = retrieveStorageObj(); // get storage.json
             this.commands = {};
-            this.pb_storage = retrieveStorageObj();
             for (let key of commandList) {
                 try {
                     let cmd = require(`./pb_commands/${key}`);
@@ -39,6 +39,12 @@ const Purple = (() => {
                     console.log(`[ERROR] Error Detected while loading command: ${e.toString()}`)
                 }
             }
+        }
+        saveStorage() {
+            fs.writeFile("./pb_data/storage.json", this.pb_storage, (err) => {
+                if (err) throw err;
+                console.log("Content saved successfuly!");
+            });
         }
         processArgs(cmdString, cmdName) {
             let product = {};
@@ -84,7 +90,8 @@ const Purple = (() => {
                 client: client,
                 content_clean: cmdArgs.contentsaid,
                 content_args: cmdArgs.args,
-                cmd_list: this.commands
+                cmd_list: this.commands,
+                purple_tools: this
             }); // execute the function
         }
     };
