@@ -3,6 +3,7 @@ const fs = require("fs");
 const ytdl = require("ytdl-core");
 const yousearch = require("youtube-search");
 const config = require("./pb_data/config");
+const purplelog = require("./purplelog.js");
 
 const client = new Discord.Client();
 
