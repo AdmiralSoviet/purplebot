@@ -106,7 +106,7 @@ client.on("ready", () => {
 });
 
 client.on("messageDelete", (msg) => {
-    purplelog.log(`\n[NEW EVENT] Server: ${(msg.guild) ? msg.guild.name : "DM Channel"} | Channel: ${msg.channel.name} | Timestamp: ${new Date().toLocaleString('en-GB')}\n[MESSAGE] Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
+    purplelog.log(`Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
 });
 
 // base logging and core command detection
@@ -130,7 +130,7 @@ client.on("message", (msg) => {
     }
     // command processing
     if (msg.content.startsWith(config.prefix)) {
-        purplelog.log(`\n[NEW EVENT] Server: ${(msg.guild) ? msg.guild.name : "DM Channel"} | Channel: ${msg.channel.name} | Timestamp: ${new Date().toLocaleString('en-GB')}\n${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
+        purplelog.log(`\n[EVENT] Server: ${(msg.guild) ? msg.guild.name : "DM Channel"} | Channel: ${msg.channel.name} | Timestamp: ${new Date().toLocaleString('en-GB')}\n${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
         Purple.processCmd(msg);
     }
 });
