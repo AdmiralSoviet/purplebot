@@ -19,6 +19,7 @@ const cmd = {
     exec: function (opts = {}) {
         const {
             m = m,
+            client = client,
             content_args = content_args
         } = opts;
         let path = "purplelog.log";
