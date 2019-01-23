@@ -12,7 +12,7 @@ const cmd = {
     name: "getlogall",
     category: "General",
     desc: "Retrieves the master log file for the bot. (Dev only)",
-    usage: "getlog",
+    usage: "getlogall <server id>",
     hidden: true,
     modonly: true,
     devonly: true,

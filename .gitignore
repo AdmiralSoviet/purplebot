@@ -2,6 +2,7 @@
 pb_data/config.json
 pb_data/storage.json
 pb_data/events.json
+pb_data/*.txt
 pb_data/logs/
 
 # Logs
