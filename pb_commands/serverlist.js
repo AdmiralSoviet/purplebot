@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 const cmd = {
     name: "serverlist",
     category: "General",
-    desc: "Prints a list of guilds the bot is running on with some basic info.",
+    desc: "Prints a list of guilds the bot is running on with some basic info. (Dev Only)",
     usage: "serverlist",
     hidden: true,
     modonly: false,

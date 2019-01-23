@@ -11,7 +11,7 @@ function genString(length) {
 const cmd = {
     name: "getlog",
     category: "General",
-    desc: "Retrieves the guild's purplebot logs. (Mod only)",
+    desc: "Retrieves the guild's purplebot logs. (Dev only)",
     usage: "getlog",
     hidden: false,
     modonly: true,
