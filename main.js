@@ -54,9 +54,9 @@ const Purple = (() => {
             return product;
         }
         getPermissions(msg) {
-            if (!msg.guild || !msg.member) {
+            /* if (!msg.guild || !msg.member) {
                 return false;
-            }
+            } */
             const perms = {
                 dev: false,
                 mod: false
