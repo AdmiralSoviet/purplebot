@@ -104,7 +104,7 @@ const Purple = (() => {
 
 // bot has successfully logged into discord
 client.on("ready", () => {
-    purplelog.log(`[LOGIN] ${new Date().toLocaleString('en-GB')}: ${client.user.username} is now online...`, undefined, false)
+    purplelog.log(`[INFO] ${new Date().toLocaleString('en-GB')}: ${client.user.username} is now online...`, undefined, false)
 });
 
 client.on("messageDelete", (msg) => {
@@ -114,7 +114,7 @@ client.on("messageDelete", (msg) => {
 // base logging and core command detection
 client.on("message", (msg) => {
     if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-        purplelog.log(`${msg.author.username}: ${msg.content}`, msg.guild);
+        purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - [BOT]${m.author.username}:`, msg.guild);
     console.log(`[${msg.channel.name}/${msg.channel.id}] ${msg.author.username}: ${msg.content}`);
     if (msg.embeds) {
         msg.embeds.forEach((x) => {
@@ -132,7 +132,7 @@ client.on("message", (msg) => {
     }
     // command processing
     if (msg.content.startsWith(config.prefix)) {
-        purplelog.log(`\n[EVENT] Server: ${(msg.guild) ? msg.guild.name : "DM Channel"} | Channel: ${msg.channel.name} | Timestamp: ${new Date().toLocaleString('en-GB')}\n${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
+        purplelog.log(`INFO - Server:${msg.guild.name} - Channel:${msg.channel.name}\n1/23/2019, 1:13:00 PM - MESSAGE - ${msg.author.username}: ${msg.conent}`, msg.guild); // if a user runs a bot command, log that.
         Purple.processCmd(msg);
     }
 });
