@@ -65,8 +65,10 @@ const Purple = (() => {
                 perms.dev = true;
                 perms.mod = true;
             }
-            if (msg.channel.permissionsFor(msg.member).has("ADMINISTRATOR")) {
-                perms.mod = true;
+            if (msg.guild) {
+                if (msg.channel.permissionsFor(msg.member).has("ADMINISTRATOR")) {
+                    perms.mod = true;
+                }
             }
             return perms;
         }
