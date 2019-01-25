@@ -108,31 +108,31 @@ client.on("ready", () => {
 });
 
 client.on("messageDelete", (msg) => {
-    purplelog.log(`Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
+    purplelog.log(`[WARN] Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
 });
 
 // base logging and core command detection
 client.on("message", (msg) => {
     if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-        purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - [BOT]${m.author.username}:`, msg.guild);
+        purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - [BOT]${msg.author.username}:`, msg.guild);
     console.log(`[${msg.channel.name}/${msg.channel.id}] ${msg.author.username}: ${msg.content}`);
     if (msg.embeds) {
         msg.embeds.forEach((x) => {
             console.log(`[EMBED] ${x.title}`);
             if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-                purplelog.log(`[EMBED] ${x.title}`, msg.guild);
+                purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - EMBED - ${x.title}`, msg.guild);
         });
     }
     if (msg.attachments) {
         msg.attachments.tap((a) => {
             console.log(`[ATTACHMENT/${msg.author.username}] ${a.url}`)
             if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-                purplelog.log(`[ATTACHMENT] ${a.url}`, msg.guild);
+                purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - ATTACHMENT - ${a.url}`, msg.guild);
         });
     }
     // command processing
     if (msg.content.startsWith(config.prefix)) {
-        purplelog.log(`INFO - Server:${msg.guild.name} - Channel:${msg.channel.name}\n1/23/2019, 1:13:00 PM - MESSAGE - ${msg.author.username}: ${msg.conent}`, msg.guild); // if a user runs a bot command, log that.
+        purplelog.log(`INFO - Server:${msg.guild.name} - Channel:${msg.channel.name}\n${new Date().toLocaleString('en-GB')} - MESSAGE - ${msg.author.username}: ${msg.conent}`, msg.guild); // if a user runs a bot command, log that.
         Purple.processCmd(msg);
     }
 });
