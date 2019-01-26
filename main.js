@@ -132,7 +132,7 @@ client.on("message", (msg) => {
     }
     // command processing
     if (msg.content.startsWith(config.prefix)) {
-        purplelog.log(`INFO - Server:${msg.guild.name} - Channel:${msg.channel.name}\n${new Date().toLocaleString('en-GB')} - MESSAGE - ${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
+        purplelog.log(`INFO - Server:${(msg.guild) ? msg.guild.name : "DM Channel"} - Channel:${msg.channel.name}\n${new Date().toLocaleString('en-GB')} - MESSAGE - ${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
         Purple.processCmd(msg);
     }
 });
