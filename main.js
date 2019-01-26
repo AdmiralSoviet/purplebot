@@ -115,7 +115,7 @@ client.on("messageDelete", (msg) => {
 client.on("message", (msg) => {
     if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
         purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - [BOT]${msg.author.username}: ${msg.content}`, msg.guild);
-    console.log(`[${msg.channel.name}/${msg.channel.id}] ${msg.author.username}: ${msg.content}`);
+    console.log(`[${(msg.guild) ? msg.guild.name : "DM Channel"}/${msg.channel.name}] ${msg.author.username}: ${msg.content}`);
     if (msg.embeds) {
         msg.embeds.forEach((x) => {
             console.log(`[EMBED] ${x.title}`);
