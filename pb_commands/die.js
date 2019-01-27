@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 const cmd = {
     name: "die",
-    category: "Moderation   ",
+    category: "General",
     desc: "Kills the process. (Dev Only)",
     usage: "die",
     hidden: true,
