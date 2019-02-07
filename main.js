@@ -35,9 +35,9 @@ const Purple = (() => {
                 try {
                     let cmd = require(`./pb_commands/${key}`);
                     this.commands[cmd.name] = cmd;
-                    console.log(`Loaded '${cmd.name}' command...`);
+                    purplelog.log(`Loaded '${cmd.name}' command...`);
                 } catch (e) {
-                    console.log(`[ERROR] Error Detected while loading command: ${e.toString()}`)
+                    purplelog.log(`[ERROR] Error Detected while loading command: ${e.toString()}`)
                 }
             }
         }
@@ -77,7 +77,7 @@ const Purple = (() => {
             cmd = cmd.replace(config.prefix, "");
             let command = this.commands[cmd];
             if (!command) {
-                console.log(`[ERROR] Unknown command detected (${config.prefix+cmd}).`)
+                purplelog.log(`[WARN] Unknown command detected (${config.prefix+cmd}).`, msg.guild);
                 return false;
             };
             const perms = this.getPermissions(msg);
@@ -108,7 +108,7 @@ client.on("ready", () => {
 });
 
 client.on("messageDelete", (msg) => {
-    purplelog.log(`[WARN] Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
+    purplelog.log(`[WARN] ${new Date().toLocaleString('en-GB')}: Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
 });
 
 // base logging and core command detection
