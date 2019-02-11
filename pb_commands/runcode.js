@@ -11,6 +11,7 @@ const cmd = {
     exec: function (opts = {}) {
         const {
             m = m,
+            client = client,
             content_clean = content_clean
         } = opts;
         m.delete();
