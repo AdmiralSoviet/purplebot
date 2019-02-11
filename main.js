@@ -80,6 +80,10 @@ const Purple = (() => {
                 purplelog.log(`[WARN] Unknown command detected (${config.prefix+cmd}).`, msg.guild);
                 return false;
             };
+            if(msg.author.id == client.user.id){
+                purplelog.log(`[WARN] bot almost self-executed a command!`);
+                return false;
+            }
             const perms = this.getPermissions(msg);
             // permission checking
             if ((command.modonly && !perms.mod) || (command.devonly && !perms.dev)) {
