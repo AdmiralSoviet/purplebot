@@ -8,28 +8,26 @@ const purplelog = require("./purplelog.js");
 const client = new Discord.Client();
 
 const Purple = (() => {
-    function retrieveStorageObj() {
-        fs.exists("./pb_data/storage.json", (exists) => {
-            if (!exists) {
-                // write inital data if storage.json doesn't exist
-                fs.writeFile("./pb_data/storage.json", `{"questions":[],"quotes":[],"guilds":{}}`, {
-                    flag: 'wx'
-                }, (e) => {
-                    if (e) throw err;
-                    console.log("[STATUS] storage.json created!");
-                    return require("./pb_data/storage.json");
-                });
-            } else {
-                return require("./pb_data/storage.json")
-            }
-        });
+    function generateStorage() {
+        if (!fs.existsSync("./pb_data/storage.json")) {
+            // write inital data if storage.json doesn't exist
+            fs.writeFile("./pb_data/storage.json", `{"questions":[],"quotes":[],"guilds":{}}`, {
+                flag: 'wx'
+            }, (e) => {
+                if (e) throw e;
+                console.log("[STATUS] storage.json created!");
+            });
+            return {questions:[], quotes:[], guilds:{}};
+        } else{
+            return JSON.parse(fs.readFileSync("./pb_data/storage.json", "utf-8"));
+        }
     }
 
     class purpleBase {
         constructor() {
             // generate command list
             let commandList = fs.readdirSync("./pb_commands");
-            this.pb_storage = retrieveStorageObj(); // get storage.json
+            this.pb_storage = generateStorage(); // get storage.json
             this.commands = {};
             for (let key of commandList) {
                 try {
@@ -42,7 +40,7 @@ const Purple = (() => {
             }
         }
         saveStorage() {
-            fs.writeFile("./pb_data/storage.json", this.pb_storage, (err) => {
+            fs.writeFile("./pb_data/storage.json", JSON.stringify(this.pb_storage), (err) => {
                 if (err) throw err;
                 console.log("Content saved successfuly!");
             });
@@ -52,6 +50,16 @@ const Purple = (() => {
             product.contentsaid = cmdString.replace(config.prefix + cmdName, "");
             product.args = product.contentsaid.split(" ");
             return product;
+        }
+        getGuild(id) {
+            if (!this.pb_storage.guilds[id]) {
+                this.pb_storage.guilds[id] = {
+                    users: {}
+                };
+                this.saveStorage();
+                purplelog.log(`[INFO] ${new Date().toLocaleString('en-GB')}: Wrote new guild to storage.json (${id})`);
+            }
+            return this.pb_storage.guilds[id];
         }
         getPermissions(msg) {
             /* if (!msg.guild || !msg.member) {
@@ -80,7 +88,7 @@ const Purple = (() => {
                 purplelog.log(`[WARN] Unknown command detected (${config.prefix+cmd}).`, msg.guild);
                 return false;
             };
-            if(msg.author.id == client.user.id){
+            if (msg.author.id == client.user.id) {
                 purplelog.log(`[WARN] bot almost self-executed a command!`);
                 return false;
             }
@@ -98,6 +106,7 @@ const Purple = (() => {
                 content_clean: cmdArgs.contentsaid,
                 content_args: cmdArgs.args,
                 cmd_list: this.commands,
+                purplelog: purplelog,
                 purple: this
             }); // execute the function
         }
