@@ -301,6 +301,7 @@ class Battle{
                 });
                 this.initList.splice(index, 1); // delete from initative
                 this.players.delete(mpc.id); // delete from list
+                this.i -= 1; // set back initative
                 return this.next();
             }
             // player not dead
