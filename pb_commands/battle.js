@@ -361,7 +361,7 @@ var battles = new Map();
 
 const cmd = {
     name: "battle",
-    category: "General",
+    category: "Entertainment",
     desc: "Do some battle with some of the monsters from D&D.",
     usage: "battle watch|attack|self|retreat",
     hidden: false,
