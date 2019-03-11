@@ -143,7 +143,7 @@ function lvlUP(ply, user, channel, callback){
     }
     window.addField("Current damage:", `${ply.weapon.name}: ${ply.level}${ply.weapon.damage}+${ply.level}`);
     if(ply.exp >= (lvlTable[ply.level+1]) ? lvlTable[ply.level+1].exp : ply.prvEXP * 1.5){
-        ply.exp = ply.prvEXP;
+        ply.prvEXP = ply.exp;
         lvlUP(ply, user, channel);
     }else{
         channel.send(window);
