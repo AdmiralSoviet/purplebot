@@ -142,7 +142,8 @@ function lvlUP(ply, user, channel, callback){
         window.addField("New Loot", "While looking through the body of the monster, you come across a new weapon! ("+weapon.name+")");
     }
     window.addField("Current damage:", `${ply.weapon.name}: ${ply.level}${ply.weapon.damage}+${ply.level}`);
-    if(ply.exp >= lvlTable[ply.level+1].exp){
+    if(ply.exp >= (lvlTable[ply.level+1]) ? lvlTable[ply.level+1].exp : ply.prvEXP * 1.5){
+        ply.prvEXP = exp;
         lvlUP(ply, user, channel);
     }else{
         channel.send(window);
@@ -352,7 +353,7 @@ class Battle{
         this.players.forEach((v)=>{
             v.charData.prvEXP = v.charData.exp;
             v.charData.exp += exp;
-            if(v.charData.exp >= lvlTable[v.charData.level+1].exp){ // if they have the required exp
+            if(v.exp >= (lvlTable[v.level+1]) ? lvlTable[v.level+1].exp : v.prvEXP * 1.5){ // if they have the required exp
                 lvlUP(v.charData, v.discordData, this.textChannel);
             }
         });
