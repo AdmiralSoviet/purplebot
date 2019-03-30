@@ -198,7 +198,8 @@ class Monster{
 // build monster list
 const monsters = [];
 for(property in data){
-    monsters.push(data[property]);
+    if(data[property].attacks)
+        monsters.push(data[property]);
 }
 
 /*
@@ -246,8 +247,14 @@ class Battle{
         this.players.set(user.id, {charData: plydata, discordData: user});
         this.players.get(user.id).charData.currentHP = this.players.get(user.id).charData.maxHP;
         const init = die.r("d20");
+        const current_in_queue = this.initList[this.i].name; // save current position
         this.initList.push({id: user.id, roll: init});
         this.sort();
+        this.initList.forEach((v, j)=>{
+            if(v.name == current_in_queue){
+                this.i = j;
+            }
+        })
         console.log("Player added to battle.");
     }
     sort(){
