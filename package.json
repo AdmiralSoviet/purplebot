@@ -25,6 +25,8 @@
     "discord.js": "latest",
     "fs": "latest",
     "ytdl-core": "latest",
+    "ffmpeg-binaries": "latest",
+    "opusscript": "latest",
     "youtube-search": "latest"
   },
   "devDependencies": {}

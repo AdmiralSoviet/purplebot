@@ -1,7 +1,5 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const ytdl = require("ytdl-core");
-const yousearch = require("youtube-search");
 const config = require("./pb_data/config");
 const purplelog = require("./purplelog.js");
 
@@ -54,7 +52,8 @@ const Purple = (() => {
         getGuild(id) {
             if (!this.pb_storage.guilds[id]) {
                 this.pb_storage.guilds[id] = {
-                    users: {}
+                    users: {},
+                    songs: []
                 };
                 this.saveStorage();
                 purplelog.log(`[INFO] ${new Date().toLocaleString('en-GB')}: Wrote new guild to storage.json (${id})`);
@@ -107,6 +106,7 @@ const Purple = (() => {
                 content_args: cmdArgs.args,
                 cmd_list: this.commands,
                 purplelog: purplelog,
+                music: PurpleMusic,
                 purple: this
             }); // execute the function
         }
@@ -114,6 +114,7 @@ const Purple = (() => {
 
     return new purpleBase();
 })();
+const PurpleMusic = require("./purple_music.js")(Purple); // load music
 
 // bot has successfully logged into discord
 client.on("ready", () => {
