@@ -80,8 +80,8 @@ const Purple = (() => {
             return perms;
         }
         processCmd(msg) {
+            msg = msg.replace(config.prefix, "");
             let cmd = msg.content.split(" ")[0];
-            cmd = cmd.replace(config.prefix, "");
             let command = this.commands[cmd];
             if (!command) {
                 purplelog.log(`[WARN] Unknown command detected (${config.prefix+cmd}).`, msg.guild);
@@ -143,6 +143,21 @@ client.on("message", (msg) => {
             if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
                 purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - ATTACHMENT - ${a.url}`, msg.guild);
         });
+    }
+    // if bot is mentioned
+    if(msg.isMentioned(client.user.id)){
+        purplelog.log(`INFO - Server:${(msg.guild) ? msg.guild.name : "DM Channel"} - Channel:${msg.channel.name}\n${new Date().toLocaleString('en-GB')} - MENTION - ${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
+        if(msg.content.includes("?")){
+            const yes = ["Yes", "Yep", "Yeah", "Yup", "Ye"];
+            const no = ["No", "Nope", "Nah", "Nup", "lol no"];
+            const idk = ["I have no clue, my dude", "idk", "Dunno", "/shrug"];
+            const chosen = [yes, no, idk][Math.floor(Math.random() * 3)];
+            msg.channel.send(chosen[Math.floor(Math.random() * chosen.length)]);
+        } else{
+            const rep = [":eggplant:", ":egg:", ":robot:", ":heart:", "wow"];
+            msg.channel.send(rep[Math.floor(Math.random() * rep.length)]);
+        }
+        return true;
     }
     // command processing
     if (msg.content.startsWith(config.prefix)) {
