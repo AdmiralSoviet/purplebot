@@ -80,7 +80,7 @@ const Purple = (() => {
             return perms;
         }
         processCmd(msg) {
-            msg = msg.replace(config.prefix, "");
+            msg = msg.content.replace(config.prefix, "");
             let cmd = msg.content.split(" ")[0];
             let command = this.commands[cmd];
             if (!command) {
@@ -153,6 +153,8 @@ client.on("message", (msg) => {
             const idk = ["I have no clue, my dude", "idk", "Dunno", "/shrug"];
             const chosen = [yes, no, idk][Math.floor(Math.random() * 3)];
             msg.channel.send(chosen[Math.floor(Math.random() * chosen.length)]);
+        } else if(msg.content.toLowerCase().includes("chance")){
+            msg.channel.send(`I'd give it a ${Math.floor(Math.random() * 100)+1}% chance tbh`);
         } else{
             const rep = [":eggplant:", ":egg:", ":robot:", ":heart:", "wow"];
             msg.channel.send(rep[Math.floor(Math.random() * rep.length)]);
