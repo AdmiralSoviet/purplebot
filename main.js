@@ -80,7 +80,7 @@ const Purple = (() => {
             return perms;
         }
         processCmd(msg) {
-            msg = msg.content.replace(config.prefix, "");
+            msg.content = msg.content.replace(config.prefix, "");
             let cmd = msg.content.split(" ")[0];
             let command = this.commands[cmd];
             if (!command) {
