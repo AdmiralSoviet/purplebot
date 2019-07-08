@@ -15,8 +15,12 @@ const Purple = (() => {
                 if (e) throw e;
                 console.log("[STATUS] storage.json created!");
             });
-            return {questions:[], quotes:[], guilds:{}};
-        } else{
+            return {
+                questions: [],
+                quotes: [],
+                guilds: {}
+            };
+        } else {
             return JSON.parse(fs.readFileSync("./pb_data/storage.json", "utf-8"));
         }
     }
@@ -145,17 +149,17 @@ client.on("message", (msg) => {
         });
     }
     // if bot is mentioned
-    if(msg.isMentioned(client.user.id)){
+    if (msg.isMentioned(client.user.id)) {
         purplelog.log(`INFO - Server:${(msg.guild) ? msg.guild.name : "DM Channel"} - Channel:${msg.channel.name}\n${new Date().toLocaleString('en-GB')} - MENTION - ${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
-        if(msg.content.includes("?")){
+        if (msg.content.toLowerCase().includes("chance")) {
+            msg.channel.send(`I'd give it a ${Math.floor(Math.random() * 100)+1}% chance tbh`);
+        } else if (msg.content.includes("?")) {
             const yes = ["Yes", "Yep", "Yeah", "Yup", "Ye"];
             const no = ["No", "Nope", "Nah", "Nup", "lol no"];
             const idk = ["I have no clue, my dude", "idk", "Dunno", "/shrug"];
             const chosen = [yes, no, idk][Math.floor(Math.random() * 3)];
             msg.channel.send(chosen[Math.floor(Math.random() * chosen.length)]);
-        } else if(msg.content.toLowerCase().includes("chance")){
-            msg.channel.send(`I'd give it a ${Math.floor(Math.random() * 100)+1}% chance tbh`);
-        } else{
+        } else {
             const rep = [":eggplant:", ":egg:", ":robot:", ":heart:", "wow"];
             msg.channel.send(rep[Math.floor(Math.random() * rep.length)]);
         }
