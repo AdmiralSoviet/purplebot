@@ -98,7 +98,7 @@ const Purple = (() => {
             const perms = this.getPermissions(msg);
             // permission checking
             if ((command.modonly && !perms.mod) || (command.devonly && !perms.dev)) {
-                msg.reply("Sorry, you don't have permission to do that...");
+                msg.reply("I can't let you do that.");
                 return false;
             }
             const cmdArgs = this.processArgs(msg.content, command.name);
@@ -159,8 +159,17 @@ client.on("message", (msg) => {
             const idk = ["I have no clue, my dude", "idk", "Dunno", "¯\\_(ツ)_/¯"];
             const chosen = [yes, no, idk][Math.floor(Math.random() * 3)];
             msg.channel.send(chosen[Math.floor(Math.random() * chosen.length)]);
+        } else if (msg.content.toLowerCase().includes("thank") && !msg.content.toLowerCase().includes("thanksgiving")) {
+            const thanks = ["No problem", "Happy to help ;^)", ":heart:", "Not like I have any choice :robot:"];
+            msg.channel.send(thanks[Math.floor(Math.random() * thanks.length)]);
         } else {
-            const rep = [":eggplant:", ":egg:", ":robot:", ":heart:", "wow"];
+            const rep = [":eggplant:", ":eyes:", ":robot:", ":heart:", "wow", "no u", ":thinking:"];
+            msg.guild.emojis.random(rep.length).forEach((v)=>{
+                if(v.animated)
+                    return false;
+                purplelog.log(`${new Date().toLocaleString('en-GB')} - INFO - Added ${v.toString()} to possible responses.`, msg.guild)
+                rep.push(v.toString());
+            });
             msg.channel.send(rep[Math.floor(Math.random() * rep.length)]);
         }
         return true;
