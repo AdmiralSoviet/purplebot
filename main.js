@@ -156,7 +156,7 @@ client.on("message", (msg) => {
         } else if (msg.content.includes("?")) {
             const yes = ["Yes", "Yep", "Yeah", "Yup", "Ye"];
             const no = ["No", "Nope", "Nah", "Nup", "lol no"];
-            const idk = ["I have no clue, my dude", "idk", "Dunno", "¯\_(ツ)_/¯"];
+            const idk = ["I have no clue, my dude", "idk", "Dunno", "¯\\_(ツ)_/¯"];
             const chosen = [yes, no, idk][Math.floor(Math.random() * 3)];
             msg.channel.send(chosen[Math.floor(Math.random() * chosen.length)]);
         } else {
