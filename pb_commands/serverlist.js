@@ -23,16 +23,21 @@ const cmd = {
             embed.addField("Owner ID:", v.ownerID, true);
             embed.addField("Region:", v.region, true);
             embed.addField("Members:", v.memberCount, true);
+            embed.addField("Member Status:",`
+                Online         -> ${v.members.filter(x => x.presence.status == "online").array().length}
+                Idle           -> ${v.members.filter(x => x.presence.status == "idle").array().length}
+                Do Not Disturb -> ${v.members.filter(x => x.presence.status == "dnd").array().length}
+                Offline        -> ${v.members.filter(x => x.presence.status == "offline").array().length}
+            `);
             embed.addField("More Information:", `
             Created: ${v.createdAt}
             Roles: ${v.roles.array().length}
-            Categories: ${v.channels.filter(x => x.type == "category").array().length}
             Text Channels: ${v.channels.filter(x => x.type == "text").array().length}
             Voice Channels: ${v.channels.filter(x => x.type == "voice").array().length}
             `);
             embed.setTimestamp();
             m.channel.send(embed)
-                .then(message => message.delete(client.guilds.array().length * 20000));
+                .then(message => message.delete(client.guilds.array().length * 40000));
         })
     }
 }
