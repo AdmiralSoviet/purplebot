@@ -17,7 +17,8 @@ module.exports = ((purple) => {
                     length_seconds = 0,
                     length_minutes = (length_seconds / 60).toFixed(2),
                     skipCount = 0,
-                    alreadyVoted = []
+                    alreadyVoted = [],
+                    scrape_info = true
             } = props;
             this.link = link;
             this.title = title;
@@ -26,15 +27,21 @@ module.exports = ((purple) => {
             this.alreadyVoted = alreadyVoted;
             this.length_seconds = length_seconds;
             this.length_minutes = length_minutes;
-
+            if(scrape_info){
+                this.getInfo();
+            };
+        }
+        getInfo(callback){
             const egOut = this;
-            ytdl.getInfo(link, (__, info) => {
+            ytdl.getBasicInfo(this.link, (__, info) => {
                 if (!info) {
                     return false;
                 }
-                egOut.title = info.title;
-                egOut.author = info.author.name;
+                egOut.title = info.player_response.videoDetails.title;
+                egOut.author = info.player_response.videoDetails.author;
                 egOut.length_minutes = (info.length_seconds / 60).toFixed(2);
+                if(callback)
+                    callback(info);
             });
         }
         // function to check if the user has already voted

@@ -30,9 +30,11 @@ const cmd = {
         }
         // if link is detected run this
         if (ytdl.validateURL(content_args[1])) {
-            music.addToQue(new music.pbSong({link: content_clean}), m);
+            music.addToQue(new music.pbSong({link: content_clean, scrape_info: (purple.getGuild(m.guild.id).songs.length > 0) ? true : false}), m);
             if (content_clean == purple.getGuild(m.guild.id).songs[0].link && purple.getGuild(m.guild.id).songs.length == 1) {
-                music.play(voiceChannel, purple.getGuild(m.guild.id).songs[0], m);
+                purple.getGuild(m.guild.id).songs[0].getInfo(()=>{
+                    music.play(voiceChannel, purple.getGuild(m.guild.id).songs[0], m);
+                });
             }
         } else {
             // search for the song on youtube
