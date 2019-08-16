@@ -49,7 +49,7 @@ const Purple = (() => {
         }
         processArgs(cmdString, cmdName) {
             let product = {};
-            product.contentsaid = cmdString.replace(config.prefix + cmdName, "");
+            product.contentsaid = cmdString.replace(cmdName, "");
             product.args = product.contentsaid.split(" ");
             return product;
         }
