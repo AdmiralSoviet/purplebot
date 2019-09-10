@@ -35,9 +35,12 @@ const Purple = (() => {
                 try {
                     let cmd = require(`./pb_commands/${key}`);
                     this.commands[cmd.name] = cmd;
-                    purplelog.log(`Loaded '${cmd.name}' command...`);
+                    purplelog.logBasic(`Loaded '${cmd.name}' command...`);
                 } catch (e) {
-                    purplelog.log(`[ERROR] Error Detected while loading command: ${e.toString()}`)
+                    purplelog.log(new purplelog.Entry({
+                        content: `Error Detected while loading command: ${e.toString()}`,
+                        type: "ERROR"
+                    }));
                 }
             }
         }
@@ -60,7 +63,7 @@ const Purple = (() => {
                     songs: []
                 };
                 this.saveStorage();
-                purplelog.log(`[INFO] ${new Date().toLocaleString('en-GB')}: Wrote new guild to storage.json (${id})`);
+                purplelog.log(`Wrote new guild to storage.json (${id})`);
             }
             return this.pb_storage.guilds[id];
         }
@@ -88,11 +91,19 @@ const Purple = (() => {
             let cmd = msg.content.split(" ")[0];
             let command = this.commands[cmd];
             if (!command) {
-                purplelog.log(`[WARN] Unknown command detected (${config.prefix+cmd}).`, msg.guild);
+                purplelog.log(new purplelog.Entry({
+                    content: `Unknown command detected (${config.prefix+cmd})`,
+                    guild: msg.guild,
+                    type: "WARN"
+                }));
                 return false;
             };
             if (msg.author.id == client.user.id) {
-                purplelog.log(`[WARN] bot almost self-executed a command!`);
+                purplelog.log(new purplelog.Entry({
+                    content: `bot almost self-executed a command!`,
+                    guild: msg.guild,
+                    type: "WARN"
+                }));
                 return false;
             }
             const perms = this.getPermissions(msg);
@@ -122,35 +133,73 @@ const PurpleMusic = require("./purple_music.js")(Purple); // load music
 
 // bot has successfully logged into discord
 client.on("ready", () => {
-    purplelog.log(`[INFO] ${new Date().toLocaleString('en-GB')}: ${client.user.username} is now online...`, undefined, false)
+    //purplelog.log(`[INFO] ${new Date().toLocaleString('en-GB')}: ${client.user.username} is now online...`, undefined, false)
+    purplelog.log(new purplelog.Entry({
+        content: `${client.user.username} is now online...`
+    }));
 });
 
 client.on("messageDelete", (msg) => {
-    purplelog.log(`[WARN] ${new Date().toLocaleString('en-GB')}: Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
+    //purplelog.log(`[WARN] ${new Date().toLocaleString('en-GB')}: Message '${msg.content}' by ${msg.author.username} deleted.`, msg.guild, false);
+    purplelog.log(new purplelog.Entry({
+        type: "WARN",
+        content: `Message '${msg.content}' by ${msg.author.username} deleted.`,
+        guild: msg.guild
+    }));
+});
+
+client.on("error", (err) => {
+    purplelog.log(err.toString());
 });
 
 // base logging and core command detection
 client.on("message", (msg) => {
+    // make a new section if a message is sent in a new channel/guild
+    if (msg.guild) {
+        if (purplelog.lastSection != `Server:${msg.guild.name} - Channel:${msg.channel.name}`) {
+            purplelog.lastSection = `Server:${msg.guild.name} - Channel:${msg.channel.name}`;
+            purplelog.newSection(`Server:${msg.guild.name} - Channel:${msg.channel.name}`, `pbot_${msg.guild.id}_${msg.guild.name}.log`);
+        }
+    } else {
+        // log dms
+        purplelog.log(new purplelog.Entry({
+            content: `${msg.author.username}: ${msg.content}`,
+            type: "MESSAGE"
+        }));
+    }
     if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-        purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - [BOT]${msg.author.username}: ${msg.content}`, msg.guild);
-    console.log(`[${(msg.guild) ? msg.guild.name : "DM Channel"}/${msg.channel.name}] ${msg.author.username}: ${msg.content}`);
+        purplelog.log(new purplelog.Entry({
+            content: `[BOT]${msg.author.username}: ${msg.content}`,
+            type: "MESSAGE",
+            guild: msg.guild
+        }));
     if (msg.embeds) {
         msg.embeds.forEach((x) => {
-            console.log(`[EMBED] ${x.title}`);
             if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-                purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - EMBED - ${x.title}`, msg.guild);
+                purplelog.log(new purplelog.Entry({
+                    content: x.title,
+                    type: "EMBED",
+                    guild: msg.guild
+                }));
         });
     }
     if (msg.attachments) {
         msg.attachments.tap((a) => {
-            console.log(`[ATTACHMENT/${msg.author.username}] ${a.url}`)
             if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
-                purplelog.log(`${new Date().toLocaleString('en-GB')} - MESSAGE - ATTACHMENT - ${a.url}`, msg.guild);
+                purplelog.log(new purplelog.Entry({
+                    content: a.url,
+                    type: "ATTACHMENT",
+                    guild: msg.guild
+                }));
         });
     }
     // if bot is mentioned
     if (msg.isMentioned(client.user.id)) {
-        purplelog.log(`INFO - Server:${(msg.guild) ? msg.guild.name : "DM Channel"} - Channel:${msg.channel.name}\n${new Date().toLocaleString('en-GB')} - MENTION - ${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
+        purplelog.log(new purplelog.Entry({
+            content: `${msg.author.username}: ${msg.content}`,
+            type: "MENTION",
+            guild: msg.guild
+        })); // if a user runs a bot command, log that.
         if (msg.content.toLowerCase().includes("chance")) {
             msg.channel.send(`I'd give it a ${Math.floor(Math.random() * 100)+1}% chance tbh`);
         } else if (msg.content.includes("?")) {
@@ -164,10 +213,13 @@ client.on("message", (msg) => {
             msg.channel.send(thanks[Math.floor(Math.random() * thanks.length)]);
         } else {
             const rep = [":eggplant:", ":eyes:", ":robot:", ":heart:", "wow", "no u", ":thinking:"];
-            msg.guild.emojis.random(rep.length).forEach((v)=>{
-                if(v.animated)
+            msg.guild.emojis.random(rep.length).forEach((v) => {
+                if (v.animated)
                     return false;
-                purplelog.log(`${new Date().toLocaleString('en-GB')} - INFO - Added ${v.toString()} to possible responses.`, msg.guild)
+                purplelog.log(new purplelog.Entry({
+                    content: `Added ${v.toString()} to possible responses.`,
+                    guild: msg.guild
+                }));
                 rep.push(v.toString());
             });
             msg.channel.send(rep[Math.floor(Math.random() * rep.length)]);
@@ -176,7 +228,11 @@ client.on("message", (msg) => {
     }
     // command processing
     if (msg.content.startsWith(config.prefix)) {
-        purplelog.log(`INFO - Server:${(msg.guild) ? msg.guild.name : "DM Channel"} - Channel:${msg.channel.name}\n${new Date().toLocaleString('en-GB')} - MESSAGE - ${msg.author.username}: ${msg.content}`, msg.guild); // if a user runs a bot command, log that.
+        purplelog.log(new purplelog.Entry({
+            content: `${msg.author.username}: ${msg.content}`,
+            type: "MESSAGE",
+            guild: msg.guild
+        }));
         Purple.processCmd(msg);
     }
 });

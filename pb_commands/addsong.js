@@ -40,7 +40,7 @@ const cmd = {
             // search for the song on youtube
             yousearch(content_clean, config.youtube_options, function (err, results) {
                 if (err) {
-                    purplelog.log(`[MUSIC] ${err}`, m.guild);
+                    purplelog.log(new purplelog.Entry({content: err.toString(), guild: m.guild, type: "MUSIC"}));
                     return m.channel.send(`:no_entry: Could not add song (${err}).`);
                 }
                 const link = results[0].link;

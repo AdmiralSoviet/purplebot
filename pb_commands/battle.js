@@ -395,7 +395,7 @@ const cmd = {
             return m.channel.send(":octagonal_sign: Sorry, you must be in a guild to do that...");
         const guildID = m.guild.id;
         if(!purple.getGuild(guildID).users[m.author.id]){
-            purplelog.log(`[INFO] Creating new user data...`);
+            purplelog.log(`Creating new user data...`);
             purple.getGuild(guildID).users[m.author.id] = {
                 level: 1,
                 exp: 0,

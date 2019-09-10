@@ -35,7 +35,7 @@ const cmd = {
         if (!purple.getGuild(m.guild.id).songs[0].checkVoted(m.author.id)) {
             const requiredVote = Math.round(countMembers * 0.6); // 60% of vote required
             purple.getGuild(m.guild.id).songs[0].skipCount += 1;
-            purplelog.log(`[MUSIC] VOTES: ${purple.getGuild(m.guild.id).songs[0].skipCount}/${requiredVote}`, m.guild, false);
+            purplelog.log(new purplelog.Entry({content: `VOTES: ${purple.getGuild(m.guild.id).songs[0].skipCount}/${requiredVote}`, guild: m.guild, type:"MUSIC"}));
             // if the vote succeeds
             if (purple.getGuild(m.guild.id).songs[0].skipCount >= requiredVote) {
                 m.channel.send(":ballot_box: Enough people have voted to skip the song. (" + purple.getGuild(m.guild.id).songs[0].skipCount + "/" + requiredVote + ")");

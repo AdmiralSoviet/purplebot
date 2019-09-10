@@ -26,7 +26,7 @@ const cmd = {
             return m.reply('Please be in a voice channel first!');
         }
         m.channel.send(":trumpet: Stopping stream...");
-        purplelog.log("[MUSIC] Leaving channel.", m.guild, true);
+        purplelog.log(new purplelog.Entry({content: "Leaving channel.", guild: m.guild, type: "MUSIC"}));
         music.clearQue(m);
         voiceChannel.leave();
     }
