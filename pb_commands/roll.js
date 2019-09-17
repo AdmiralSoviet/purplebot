@@ -36,7 +36,7 @@ const cmd = {
         embed.setTitle(":game_die: Result of Rolling " + content_args[1] + "! :game_die:");
         embed.setDescription("The maximum for this roll is " + roll.max + ", here's how you rolled.");
         embed.setColor("RANDOM");
-        embed.setThumbnail("https://www.thediceplace.com/acatalog/opaque_d20_blue.jpg");
+        embed.setThumbnail("https://i1.wp.com/farthertogo.com/wp-content/uploads/2018/04/roll-the-dice-2.jpg");
         let rollDur = roll.list.length;
         if (rollDur != 1) {
             if (rollDur > 24) {

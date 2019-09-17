@@ -160,12 +160,6 @@ client.on("message", (msg) => {
             purplelog.lastSection = `Server:${msg.guild.name} - Channel:${msg.channel.name}`;
             purplelog.newSection(`Server:${msg.guild.name} - Channel:${msg.channel.name}`, `pbot_${msg.guild.id}_${msg.guild.name}.log`);
         }
-    } else {
-        // log dms
-        purplelog.log(new purplelog.Entry({
-            content: `${msg.author.username}: ${msg.content}`,
-            type: "MESSAGE"
-        }));
     }
     if (msg.author.id == client.user.id) // if purplebot sends a message, log it seperatly
         purplelog.log(new purplelog.Entry({
