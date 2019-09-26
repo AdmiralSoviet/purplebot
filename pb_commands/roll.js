@@ -46,7 +46,7 @@ const die = (() => {
             }
             let total = 0;
             let roll;
-            const max = ((rCvrt.face + (rCvrt.foreach_modifier) ? rCvrt.foreach_modifier : 0) * rCvrt.iterator) + (rCvrt.bonus) ? rCvrt.bonus : 0;
+            let max = ((rCvrt.face + ((rCvrt.foreach_modifier) ? rCvrt.foreach_modifier : 0)) * rCvrt.iterator) + ((rCvrt.bonus) ? rCvrt.bonus : 0);
             let list = [];
             for (let i = 1; i <= rCvrt.iterator; i++) {
                 roll = Math.floor(Math.random() * rCvrt.face) + 1;
