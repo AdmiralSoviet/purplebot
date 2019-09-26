@@ -46,12 +46,13 @@ const die = (() => {
             }
             let total = 0;
             let roll;
+            const max = ((rCvrt.face + (rCvrt.foreach_modifier) ? rCvrt.foreach_modifier : 0) * rCvrt.iterator) + (rCvrt.bonus) ? rCvrt.bonus : 0;
             let list = [];
             for (let i = 1; i <= rCvrt.iterator; i++) {
                 roll = Math.floor(Math.random() * rCvrt.face) + 1;
                 if (rCvrt.foreach_modifier)
                     roll += rCvrt.foreach_modifier;
-                    list.push(roll);
+                list.push(roll);
                 if (!mute)
                     console.log("Roll " + i + ": " + roll);
                 total += roll;
@@ -66,7 +67,11 @@ const die = (() => {
             if (!mute) {
                 console.log("Total roll: " + total);
             }
-            return {total, list, max: rCvrt.face * rCvrt.iterator};
+            return {
+                total,
+                list,
+                max
+            };
         },
         s: function (diceObj) {
             return `${(diceObj.negative) ? "-" : ""}${diceObj.iterator}d${diceObj.face}${(diceObj.foreach_modifier) ? "*" : ""}${(diceObj.bonus) ? "+"+diceObj.bonus : ""}`;
@@ -86,8 +91,8 @@ const cmd = {
     exec: function (opts = {}) {
         const {
             m = m,
-            client = client,
-            content_args = content_args
+                client = client,
+                content_args = content_args
         } = opts;
         m.channel.send("Rolling " + content_args[1] + "...");
         const roll = die.r(content_args[1]);
