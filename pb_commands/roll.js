@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 
+/* 
 function rollf(arg) {
     arg = arg.split("d");
     const times = (arg[0] != "") ? parseInt(arg[0]) : 1;
@@ -16,6 +17,64 @@ function rollf(arg) {
     }
     return result;
 }
+*/
+
+const die = (() => {
+    const dief = {
+        cvt: function (diceRoll) {
+            diceRoll = diceRoll.toLowerCase();
+            let diceObj = {};
+            if (diceRoll[0] == "-") {
+                diceRoll = diceRoll.replace("-", "");
+                diceObj.negative = true;
+            }
+            if (diceRoll.includes("*")) {
+                diceObj.foreach_modifier = parseInt(diceRoll.split("*")[1]);
+            }
+            if (diceRoll.includes("+")) {
+                diceObj.bonus = parseInt(diceRoll.split("+")[1]);
+            }
+            diceRoll = diceRoll.split("d");
+            diceObj.iterator = (diceRoll[0] != "") ? parseInt(diceRoll[0]) : 1;
+            diceObj.face = parseInt(diceRoll[1]);
+            return diceObj;
+        },
+        r: function (arg, mute) {
+            const rCvrt = this.cvt(arg);
+            if (rCvrt.iterator == 0) {
+                return 0;
+            }
+            let total = 0;
+            let roll;
+            let list = [];
+            for (let i = 1; i <= rCvrt.iterator; i++) {
+                roll = Math.floor(Math.random() * rCvrt.face) + 1;
+                if (rCvrt.foreach_modifier)
+                    roll += rCvrt.foreach_modifier;
+                    list.push(roll);
+                if (!mute)
+                    console.log("Roll " + i + ": " + roll);
+                total += roll;
+            }
+            if (rCvrt.bonus) {
+                if (!mute)
+                    console.log(`Bonus Applied (+${rCvrt.bonus})`);
+                total = total + rCvrt.bonus;
+            }
+            if (rCvrt.negative)
+                total = total * -1;
+            if (!mute) {
+                console.log("Total roll: " + total);
+            }
+            return {total, list, max: rCvrt.face * rCvrt.iterator};
+        },
+        s: function (diceObj) {
+            return `${(diceObj.negative) ? "-" : ""}${diceObj.iterator}d${diceObj.face}${(diceObj.foreach_modifier) ? "*" : ""}${(diceObj.bonus) ? "+"+diceObj.bonus : ""}`;
+        }
+    }
+    return dief
+})();
+
 const cmd = {
     name: "roll",
     category: "Entertainment",
@@ -31,7 +90,7 @@ const cmd = {
             content_args = content_args
         } = opts;
         m.channel.send("Rolling " + content_args[1] + "...");
-        const roll = rollf(content_args[1]);
+        const roll = die.r(content_args[1]);
         var embed = new Discord.RichEmbed();
         embed.setTitle(":game_die: Result of Rolling " + content_args[1] + "! :game_die:");
         embed.setDescription("The maximum for this roll is " + roll.max + ", here's how you rolled.");
