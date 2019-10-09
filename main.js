@@ -18,7 +18,7 @@ const Purple = (() => {
             return {
                 questions: [],
                 quotes: [],
-                guilds: {}
+                meme: {}
             };
         } else {
             return JSON.parse(fs.readFileSync("./pb_data/storage.json", "utf-8"));
