@@ -19,13 +19,15 @@ module.exports = ((purple) => {
                     skipCount = 0,
                     alreadyVoted = [],
                     scrape_info = true,
-		    connection = null
+		    connection = null,
+		    channel = null
             } = props;
             this.link = link;
             this.title = title;
             this.skipCount = skipCount;
             this.author = author;
             this.alreadyVoted = alreadyVoted;
+	    this.channel = channel;
             this.length_seconds = length_seconds;
             this.length_minutes = length_minutes;
 	    this.connection = connection;
@@ -66,7 +68,7 @@ module.exports = ((purple) => {
         purple.getGuild(message.guild.id).songs.splice(0, 1); // delete from queue
         if (!music_obj.queIsEmpty(message)) {
             purplelog.log("[MUSIC] Playing next song in queue...", message.guild, false)
-            music_obj.play(voiceChannel, purple.getGuild(message.guild.id).songs[0], message); // play next song
+            music_obj.play(purple.getGuild(message.guild.id).songs[0], message); // play next song
         } else {
             purplelog.log("[MUSIC] Finished playing all songs in the queue!", message.guild, false);
             message.channel.send(":musical_note: Finished playing all songs in the queue."); // we're done here.
@@ -77,6 +79,12 @@ module.exports = ((purple) => {
     music_obj.addToQue = (song, message) => {
         // make sure the queue exists in songue.json
         if (purple.getGuild(message.guild.id).songs) {
+	    if(purple.getGuild(message.guild.id).songs[0]){
+	    	if(purple.getGuild(message.guild.id).songs[0].channel.members.size <= 1){
+			purple.getGuild(message.guild.id).songs = []; // clear queue if no one's home
+			message.channel.send(":japanese_goblin: Lemme just reset the queue since *no one is listening*");
+		}
+	    }
             // make sure que doesn't have too many items for the !eg_queue command
             if (purple.getGuild(message.guild.id).songs.length < 15) {
                 purple.getGuild(message.guild.id).songs.push(song); // add the song to the que
@@ -99,12 +107,13 @@ module.exports = ((purple) => {
         purple.getGuild(message.guild.id).songs = [];
         message.channel.send(":recycle: Queue cleared!");
     };
-    music_obj.play = (voiceChannel, pbSong, message) => {
+    music_obj.play = (pbSong, message) => {
         const streamOptions = {
             seek: 0,
             volume: 0.5
         };
-        voiceChannel.join()
+	
+        pbSong.channel.join()
             .then(connection => {
                 let stream = ytdl(pbSong.link, {
                     filter: 'audioonly',
@@ -113,12 +122,16 @@ module.exports = ((purple) => {
                 const dispatcher = connection.play(stream, streamOptions);
                 dispatcher.on('finish', () => {
                     // play next video
-                    stoppedPlaying(voiceChannel, message);
+                    stoppedPlaying(pbSong.channel, message);
                 });
 		pbSong.connection = dispatcher;
                 purplelog.log("[MUSIC] Joining channel", message.guild, false);
                 message.channel.send(`:musical_note: Now playing **${pbSong.title}**`);
-            });
+            })
+	    .catch(err =>{
+	    	message.channel.send(`:no_entry_sign: Skipping because I can't join that channel :c`);
+		stoppedPlaying(pbSong.channel, message);
+	    });
     };
     music_obj.skip = (message) => {
         if (purple.getGuild(message.guild.id).songs[0]) {
@@ -127,6 +140,10 @@ module.exports = ((purple) => {
             if (!voiceChannel.channel) {
                 return message.reply(':no_entry_sign: Please be in a voice channel first!');
             }
+	    if(purple.getGuild(message.guild.id).songs[0].channel != message.member.voice.channel)
+	    {
+		return message.reply(':no_entry_sign: That song isnt playing in your current channel!');
+	    }
             purple.getGuild(message.guild.id).songs[0].connection.end();
         } else {
             return message.reply(":no_entry_sign: Nothing to skip!");
