@@ -9,7 +9,7 @@ function getWikihow() {
     let randomNum = Math.floor(Math.random() * wikiHow.length);
     let wikihowTitle = wikiHow[randomNum];
     wikihowTitle = wikihowTitle.replace(/-/g, " ");
-    const wikiEmbed = new Discord.RichEmbed();
+    const wikiEmbed = new Discord.MessageEmbed();
     wikiEmbed.setTitle("How To " + wikihowTitle);
     wikiEmbed.setAuthor("wikiHow");
     wikiEmbed.setDescription("According to wikiHow, this is how you can " + wikihowTitle.toLowerCase() + "!");

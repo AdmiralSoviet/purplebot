@@ -22,12 +22,12 @@ const cmd = {
         if (!m.guild || !m.member) {
             return m.channel.send(":no_entry: This command must be sent in a server!");
         }
-        const voiceChannel = m.member.voiceChannel;
+        const voiceChannel = m.member.voice.channel;
         // if user not in voice channel
         if (!voiceChannel) {
             return m.reply(':no_entry: Please be in a voice channel first!');
         }
-        var countMembers = Array.from(voiceChannel.members.values()).length - 1; // subtract one to remove bot from vote
+        let countMembers = Array.from(voiceChannel.members.values()).length - 1; // subtract one to remove bot from vote
         // if the queue doesn't exist or queue is empty
         if (!purple.getGuild(m.guild.id).songs || !purple.getGuild(m.guild.id).songs[0]) {
             return m.reply(":trumpet: Nothing is playing!");

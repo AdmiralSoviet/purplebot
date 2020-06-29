@@ -115,7 +115,7 @@ function serProf(lvl) {
     }
 }
 function lvlUP(ply, user, channel, callback){
-    const window = new Discord.RichEmbed();
+    const window = new Discord.MessageEmbed();
     window.setTitle(`${user.username} - :arrow_double_up: Level Up!`);
     window.setColor("GREEN");
     window.setDescription(`You have achieved the required amount of exp to level up. You are now **level ${ply.level+1}!**`);
@@ -276,7 +276,7 @@ class Battle{
     }
     start(){
         // handle the start of the battle
-        const window = new Discord.RichEmbed();
+        const window = new Discord.MessageEmbed();
         window.setTitle(`A New Encounter - ${this.monster.name}`);
         window.setDescription(`You look before you as you see a new creeping shape enter your vision, you focus on it and see that this shape is actually a ${this.monster.name}, and it looks like it wants to fight!`);
         window.addField("Name :japanese_goblin::", this.monster.name, true);
@@ -318,7 +318,7 @@ class Battle{
                 return this.next();
             }
             // player not dead
-            const window = new Discord.RichEmbed();
+            const window = new Discord.MessageEmbed();
             window.setTitle(`${ply.discordData.username}'s Turn`);
             window.setColor("RANDOM");
             window.setDescription("It is now your turn. You have three minutes to attack or you will retreat.");
@@ -341,7 +341,7 @@ class Battle{
             const random_player = this.players.get(arrPlayers[Math.floor(Math.random() * arrPlayers.length)]);
             const random_attack = this.monster.attacks[Math.floor(Math.random() * this.monster.attacks.length)];
             const roll = die.r("d20")+this.monster.attack;
-            const window = new Discord.RichEmbed();
+            const window = new Discord.MessageEmbed();
             window.setTitle(`${this.monster.name} - Monster's Turn`);
             window.setDescription(`The ${this.monster.name} is looking real angry and sets its eyes upon **${random_player.discordData.username}**!`);
             window.setColor("BLACK");
@@ -412,7 +412,7 @@ const cmd = {
             content_args[1] == "attack";
         }
         if(content_args[1] == "self"){
-            const window = new Discord.RichEmbed();
+            const window = new Discord.MessageEmbed();
             window.setTitle(`${m.author.username} - Level ${character.level}`);
             window.setDescription("You spend some time inspecting yourself, you look like you're in a good shape for a fight. Below is a summary of your stats.")
             window.setThumbnail(m.author.avatarURL);
@@ -450,7 +450,7 @@ const cmd = {
                 */
                 const damage = die.r(battles.get(m.channel.id).crntPlyDamage);
                 console.log("Damage: "+damage+" - "+battles.get(m.channel.id).crntPlyDamage);
-                const window = new Discord.RichEmbed();
+                const window = new Discord.MessageEmbed();
                 window.setTitle(`${m.author.username} - Attack`);
                 window.setDescription(`You look at the ${battles.get(m.channel.id).monster.name} and without a second thought you attack with your **${battles.get(m.channel.id).players.get(m.author.id).charData.weapon.name}**, dealing **${damage} points of damage!** (Accuracy: **${hit}** -> AC: **${battles.get(m.channel.id).monster.AC}**)`);
                 window.setThumbnail(m.author.avatarURL);

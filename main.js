@@ -31,6 +31,7 @@ const Purple = (() => {
             let commandList = fs.readdirSync("./pb_commands");
             this.pb_storage = generateStorage(); // get storage.json
             this.commands = {};
+	    this.client = client;
             for (let key of commandList) {
                 try {
                     let cmd = require(`./pb_commands/${key}`);
@@ -188,7 +189,7 @@ client.on("message", (msg) => {
         });
     }
     // if bot is mentioned
-    if (msg.isMentioned(client.user.id)) {
+    if (msg.mentions.has(client.user, {ignoreEveryone: true})) {
         purplelog.log(new purplelog.Entry({
             content: `${msg.author.username}: ${msg.content}`,
             type: "MENTION",
@@ -207,7 +208,7 @@ client.on("message", (msg) => {
             msg.channel.send(thanks[Math.floor(Math.random() * thanks.length)]);
         } else {
             const rep = [":eggplant:", ":eyes:", ":robot:", ":heart:", "wow", "no u", ":thinking:"];
-            msg.guild.emojis.random(rep.length).forEach((v) => {
+            msg.guild.emojis.cache.random(rep.length).forEach((v) => {
                 if (v.animated)
                     return false;
                 purplelog.log(new purplelog.Entry({

@@ -15,7 +15,7 @@ const cmd = {
         } = opts;
 
         client.guilds.tap((v) => {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setTitle(v.name);
             embed.setThumbnail(v.iconURL);
             embed.setColor("RANDOM");

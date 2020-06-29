@@ -13,7 +13,7 @@ const cmd = {
             m = m,
             client = client
         } = opts;
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor("PURPLE");
         embed.setURL("https://github.com/AdmiralSoviet/purplebot");
         embed.setThumbnail(client.user.avatarURL);

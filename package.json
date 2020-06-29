@@ -25,7 +25,6 @@
     "discord.js": "latest",
     "ffmpeg": "latest",
     "fs": "latest",
-    "@discordjs/uws": "latest",
     "@discordjs/opus": "latest",
     "youtube-search": "latest",
     "ytdl-core": "latest"

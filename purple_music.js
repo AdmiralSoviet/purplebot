@@ -18,7 +18,8 @@ module.exports = ((purple) => {
                     length_minutes = (length_seconds / 60).toFixed(2),
                     skipCount = 0,
                     alreadyVoted = [],
-                    scrape_info = true
+                    scrape_info = true,
+		    connection = null
             } = props;
             this.link = link;
             this.title = title;
@@ -27,6 +28,7 @@ module.exports = ((purple) => {
             this.alreadyVoted = alreadyVoted;
             this.length_seconds = length_seconds;
             this.length_minutes = length_minutes;
+	    this.connection = connection;
             if(scrape_info){
                 this.getInfo();
             };
@@ -105,25 +107,27 @@ module.exports = ((purple) => {
         voiceChannel.join()
             .then(connection => {
                 let stream = ytdl(pbSong.link, {
-                    filter: 'audioonly'
+                    filter: 'audioonly',
+		    quality: 'highestaudio'
                 });
-                const dispatcher = connection.playStream(stream, streamOptions);
-                dispatcher.on('end', () => {
+                const dispatcher = connection.play(stream, streamOptions);
+                dispatcher.on('finish', () => {
                     // play next video
                     stoppedPlaying(voiceChannel, message);
                 });
+		pbSong.connection = dispatcher;
                 purplelog.log("[MUSIC] Joining channel", message.guild, false);
                 message.channel.send(`:musical_note: Now playing **${pbSong.title}**`);
             });
     };
     music_obj.skip = (message) => {
         if (purple.getGuild(message.guild.id).songs[0]) {
-            const voiceChannel = message.member.voiceChannel;
+            const voiceChannel = message.member.voice;
             // if user not in voice channel
-            if (!voiceChannel) {
+            if (!voiceChannel.channel) {
                 return message.reply(':no_entry_sign: Please be in a voice channel first!');
             }
-            voiceChannel.connection.dispatcher.end();
+            purple.getGuild(message.guild.id).songs[0].connection.end();
         } else {
             return message.reply(":no_entry_sign: Nothing to skip!");
         }

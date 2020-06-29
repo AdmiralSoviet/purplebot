@@ -20,7 +20,7 @@ const cmd = {
         for (let property in cmd_list) {
             if (cmd_list.hasOwnProperty(property)) {
                 if (!helplist[cmd_list[property].category]) {
-                    helplist[cmd_list[property].category] = new Discord.RichEmbed();
+                    helplist[cmd_list[property].category] = new Discord.MessageEmbed();
                     helplist[cmd_list[property].category].setTitle("List of " + cmd_list[property].category + " Commands");
                     helplist[cmd_list[property].category].setColor("RANDOM");
                     helplist[cmd_list[property].category].setThumbnail(client.user.avatarURL);

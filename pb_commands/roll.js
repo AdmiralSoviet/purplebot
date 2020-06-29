@@ -96,7 +96,7 @@ const cmd = {
         } = opts;
         m.channel.send("Rolling " + content_args[1] + "...");
         const roll = die.r(content_args[1]);
-        var embed = new Discord.RichEmbed();
+        var embed = new Discord.MessageEmbed();
         embed.setTitle(":game_die: Result of Rolling " + content_args[1] + "! :game_die:");
         embed.setDescription("The maximum for this roll is " + roll.max + ", here's how you rolled.");
         embed.setColor("RANDOM");

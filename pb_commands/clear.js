@@ -21,7 +21,7 @@ const cmd = {
         if (!m.guild || !m.member) {
             return m.channel.send("This command must be sent in a server!");
         }
-        const voiceChannel = m.member.voiceChannel;
+        const voiceChannel = m.member.voice.channel;
         if (!voiceChannel) {
             return m.reply('Please be in a voice channel first!');
         }
