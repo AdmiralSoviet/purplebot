@@ -110,7 +110,7 @@ const Purple = (() => {
             const perms = this.getPermissions(msg);
             // permission checking
             if ((command.modonly && !perms.mod) || (command.devonly && !perms.dev)) {
-                msg.reply("I can't let you do that.");
+                msg.reply("sorry but no");
                 return false;
             }
             const cmdArgs = this.processArgs(msg.content, command.name);

@@ -14,7 +14,7 @@ const cmd = {
             client = client,
         } = opts;
 
-        client.guilds.tap((v) => {
+        client.guilds.cache.tap((v) => {
             const embed = new Discord.MessageEmbed();
             embed.setTitle(v.name);
             embed.setThumbnail(v.iconURL);
@@ -24,10 +24,10 @@ const cmd = {
             embed.addField("Region:", v.region, true);
             embed.addField("Members:", v.memberCount, true);
             embed.addField("Member Status:",`
-                Online         -> ${v.members.filter(x => x.presence.status == "online").array().length}
-                Idle           -> ${v.members.filter(x => x.presence.status == "idle").array().length}
-                Do Not Disturb -> ${v.members.filter(x => x.presence.status == "dnd").array().length}
-                Offline        -> ${v.members.filter(x => x.presence.status == "offline").array().length}
+                Online         -> ${v.members.cache.filter(x => x.presence.status == "online").array().length}
+                Idle           -> ${v.members.cache.filter(x => x.presence.status == "idle").array().length}
+                Do Not Disturb -> ${v.members.cache.filter(x => x.presence.status == "dnd").array().length}
+                Offline        -> ${v.members.cache.filter(x => x.presence.status == "offline").array().length}
             `);
             embed.addField("More Information:", `
             Created: ${v.createdAt}

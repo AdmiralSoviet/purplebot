@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/AdmiralSoviet/purplebot#readme",
   "dependencies": {
+    "@discordjs/opus": "latest",
     "discord.js": "latest",
     "ffmpeg": "latest",
     "fs": "latest",
-    "@discordjs/opus": "latest",
-    "youtube-search": "latest",
+    "youtube-search": "^1.1.4",
     "ytdl-core": "latest"
   },
   "devDependencies": {}

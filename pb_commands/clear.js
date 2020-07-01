@@ -6,7 +6,7 @@ const cmd = {
     desc: "Clears the music queue.",
     usage: "clear",
     hidden: false,
-    modonly: false,
+    modonly: true,
     devonly: false,
     exec: function (opts = {}) {
         const {
