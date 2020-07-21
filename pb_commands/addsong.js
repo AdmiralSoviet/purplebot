@@ -46,11 +46,11 @@ const cmd = {
             yousearch(content_clean, config.youtube_options, function (err, results) {
                 if (err) {
                     purplelog.log(new purplelog.Entry({content: err.toString(), guild: m.guild, type: "MUSIC"}));
+		    if(err.toString() == `TypeError: Cannot read property 'link' of undefined`)
+			err = "Can you give me like a normal song name, thanks";
                     return m.channel.send(`:no_entry: Could not add song (${err}).`);
                 }
                 const link = results[0].link;
-		if(link == undefined)
-		    return m.channel.send(`:no_entry: I know a lot of songs, but not that one`);
                 music.addToQue(new music.pbSong({link: link, title: results[0].title, channel: voiceChannel}), m);
                 if (link == purple.getGuild(m.guild.id).songs[0].link && purple.getGuild(m.guild.id).songs.length == 1) {
                     music.play(purple.getGuild(m.guild.id).songs[0], m);
