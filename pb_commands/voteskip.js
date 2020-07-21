@@ -25,15 +25,15 @@ const cmd = {
         const voiceChannel = m.member.voice.channel;
         // if user not in voice channel
         if (!voiceChannel) {
-            return m.reply(':no_entry: Please be in a voice channel first!');
+            return m.channel.send(':no_entry: Please be in a voice channel first!');
         }
         let countMembers = Array.from(voiceChannel.members.values()).length - 1; // subtract one to remove bot from vote
         // if the queue doesn't exist or queue is empty
         if (!purple.getGuild(m.guild.id).songs || !purple.getGuild(m.guild.id).songs[0]) {
-            return m.reply(":trumpet: Nothing is playing!");
+            return m.channel.send(":trumpet: Nothing is playing!");
         }
 	if(voiceChannel != purple.getGuild(m.guild.id).songs[0].channel)
-	    return m.reply("You have no say from over there ;^)");
+	    return m.reply("you have no say from over there ;^)");
         if (!purple.getGuild(m.guild.id).songs[0].checkVoted(m.author.id)) {
             const requiredVote = Math.round(countMembers * 0.6); // 60% of vote required
             purple.getGuild(m.guild.id).songs[0].skipCount += 1;
@@ -45,10 +45,10 @@ const cmd = {
             } else {
                 // if the vote count isn't enough to skip yet.
                 purple.getGuild(m.guild.id).songs[0].alreadyVoted.push(m.author.id);
-                m.reply(":ballot_box: Your vote has been lodged! (" + purple.getGuild(m.guild.id).songs[0].skipCount + "/" + requiredVote + ")")
+                m.channel.send(":ballot_box: Your vote has been lodged! (" + purple.getGuild(m.guild.id).songs[0].skipCount + "/" + requiredVote + ")")
             }
         } else {
-            m.reply(":no_entry: You have already voted!");
+            m.channel.send(":no_entry: You have already voted!");
         }
     }
 }
