@@ -49,6 +49,8 @@ const cmd = {
                     return m.channel.send(`:no_entry: Could not add song (${err}).`);
                 }
                 const link = results[0].link;
+		if(link == undefined)
+		    return m.channel.send(`:no_entry: I know a lot of songs, but not that one`);
                 music.addToQue(new music.pbSong({link: link, title: results[0].title, channel: voiceChannel}), m);
                 if (link == purple.getGuild(m.guild.id).songs[0].link && purple.getGuild(m.guild.id).songs.length == 1) {
                     music.play(purple.getGuild(m.guild.id).songs[0], m);
