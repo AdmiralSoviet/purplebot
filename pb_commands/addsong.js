@@ -50,7 +50,7 @@ const cmd = {
             yousearch(content_clean, config.youtube_options, function (err, results) {
                 if (err) {
                     purplelog.log(new purplelog.Entry({
-                        content: err.toString(),
+                        content: err.message,
                         guild: m.guild,
                         type: "MUSIC"
                     }));
