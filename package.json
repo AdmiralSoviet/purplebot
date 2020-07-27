@@ -23,8 +23,9 @@
   "homepage": "https://github.com/AdmiralSoviet/purplebot#readme",
   "dependencies": {
     "@discordjs/opus": "latest",
+    "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "discord.js": "latest",
-    "ffmpeg": "latest",
+    "ffmpeg": "0.0.4",
     "fs": "latest",
     "youtube-search": "^1.1.4",
     "ytdl-core": "latest"

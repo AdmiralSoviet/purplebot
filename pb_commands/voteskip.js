@@ -11,12 +11,12 @@ const cmd = {
     exec: function (opts = {}) {
         const {
             m = m,
-            music = music,
-            config = config,
-            content_clean = content_clean,
-            content_args = content_args,
-            purple = purple,
-            purplelog = purplelog
+                music = music,
+                config = config,
+                content_clean = content_clean,
+                content_args = content_args,
+                purple = purple,
+                purplelog = purplelog
         } = opts;
         // make sure the command isn't sent inside of a DM
         if (!m.guild || !m.member) {
@@ -32,12 +32,16 @@ const cmd = {
         if (!purple.getGuild(m.guild.id).songs || !purple.getGuild(m.guild.id).songs[0]) {
             return m.channel.send(":trumpet: Nothing is playing!");
         }
-	if(voiceChannel != purple.getGuild(m.guild.id).songs[0].channel)
-	    return m.reply("you have no say from over there ;^)");
+        if (voiceChannel != purple.getGuild(m.guild.id).songs[0].channel)
+            return m.reply("you have no say from over there ;^)");
         if (!purple.getGuild(m.guild.id).songs[0].checkVoted(m.author.id)) {
             const requiredVote = Math.round(countMembers * 0.6); // 60% of vote required
             purple.getGuild(m.guild.id).songs[0].skipCount += 1;
-            purplelog.log(new purplelog.Entry({content: `VOTES: ${purple.getGuild(m.guild.id).songs[0].skipCount}/${requiredVote}`, guild: m.guild, type:"MUSIC"}));
+            purplelog.log(new purplelog.Entry({
+                content: `VOTES: ${purple.getGuild(m.guild.id).songs[0].skipCount}/${requiredVote}`,
+                guild: m.guild,
+                type: "MUSIC"
+            }));
             // if the vote succeeds
             if (purple.getGuild(m.guild.id).songs[0].skipCount >= requiredVote) {
                 m.channel.send(":ballot_box: Enough people have voted to skip the song. (" + purple.getGuild(m.guild.id).songs[0].skipCount + "/" + requiredVote + ")");

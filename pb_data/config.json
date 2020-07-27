@@ -1,10 +1,11 @@
 {
-    "devid": "",
-    "ltoken": "",
-    "prefix": "!pb_",
+    "devid": "180506700065931264",
+    "ltoken": "NTM2ODg2ODEzMTA5NzgwNTAw.XVbYEA.6R0lf47eDEq3BjLqz-93ZRkxs2Y",
+    "prefix": "!p ",
     "youtube_options": {
         "maxResults": 10,
-        "key": "",
+        "key": "AIzaSyBzfltGUebuyQfniTA792Uz3NHipWwEzQU",
         "type": "video"
     }
 }
+

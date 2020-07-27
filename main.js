@@ -61,6 +61,7 @@ const Purple = (() => {
             if (!this.pb_storage.guilds[id]) {
                 this.pb_storage.guilds[id] = {
                     users: {},
+                    autoQueue: false,
                     songs: []
                 };
                 this.saveStorage();
