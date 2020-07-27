@@ -3,8 +3,6 @@ const ytdl = require("ytdl-core");
 const config = require("./pb_data/config");
 const purplelog = require("./purplelog.js");
 
-const youtube_opts = config.youtube_options;
-
 module.exports = ((purple) => {
     // Song object
     class pbSong {
@@ -99,7 +97,7 @@ module.exports = ((purple) => {
                 const new_song = new pbSong({
                     link: `https://www.youtube.com/watch?v=${next.id}`,
                     title: next.title,
-                    channel: message.member.voice.channel
+                    channel: song.channel
                 }); // generate new pbsong
                 music_obj.addToQue(new_song, message); // add it to the queue
                 music_obj.play(new_song, message); // play it
