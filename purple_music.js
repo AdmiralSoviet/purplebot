@@ -92,7 +92,7 @@ module.exports = ((purple) => {
         ytdl.getBasicInfo(song.link)
             .then((x) => {
                 const next = x.related_videos[0];
-                if (next.length == 0) {
+                if (!next) {
                     return message.channel.send(`:japanese_goblin: Looked for songs like this one and found nothing, soz`); // try again if there's no related videos
                 }
                 const new_song = new pbSong({
