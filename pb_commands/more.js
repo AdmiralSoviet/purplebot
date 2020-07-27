@@ -41,7 +41,7 @@ const cmd = {
                     if(x.videoDetails)
                         list.setThumbnail(x.videoDetails.thumbnail.thumbnails[x.videoDetails.thumbnail.thumbnails.length - 1].url);
                     else
-                        list.setThumbnail(x.thumbnail.thumbnails[x.videoDetails.thumbnail.thumbnails.length - 1].url);
+                        list.setThumbnail(x.thumbnail_url);
                     console.log()
                     x.related_videos.slice(0, 5).forEach((v) => {
                         list.addField(v.title, `By *${v.author}*`);
