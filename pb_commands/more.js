@@ -40,6 +40,7 @@ const cmd = {
                         list.addField(v.title, `By ${v.author}`);
                     });
                     list.setTimestamp();
+                    m.channel.send(list);
                 });
         } catch (err) {
             m.channel.send(`:no_entry_sign: ${err} :(`);
