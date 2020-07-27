@@ -46,7 +46,9 @@ const Purple = (() => {
             }
         }
         saveStorage() {
-            fs.writeFile("./pb_data/storage.json", JSON.stringify(this.pb_storage), (err) => {
+            const str_obj = this.pb_storage;
+            str_obj.songs = [];
+            fs.writeFile("./pb_data/storage.json", JSON.stringify(str_obj), (err) => {
                 if (err) throw err;
                 console.log("Content saved successfuly!");
             });
