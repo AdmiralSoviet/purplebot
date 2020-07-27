@@ -72,7 +72,7 @@ module.exports = ((purple) => {
                 music_obj.play(purple.getGuildTemp(message.guild.id).songs[0], message); // play next song
             } else {
                 if (purple.getGuild(message.guild.id).autoQueue === true && voiceChannel.members.size > 1) {
-                    message.channel.send(":musical_keyboard: Keeping the party going...");
+                    message.channel.send(":musical_keyboard: Keeping the party going... (autoqueue command to toggle)");
                     music_obj.autoPlay(lastSong, message); // add another song from the last youtube video's related video list
                 } else {
                     purplelog.log("[MUSIC] Finished playing all songs in the queue!", message.guild, false);
