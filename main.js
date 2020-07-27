@@ -31,7 +31,7 @@ const Purple = (() => {
             let commandList = fs.readdirSync("./pb_commands");
             this.pb_storage = generateStorage(); // get storage.json
             this.commands = {};
-	    this.client = client;
+            this.client = client;
             for (let key of commandList) {
                 try {
                     let cmd = require(`./pb_commands/${key}`);
@@ -46,8 +46,13 @@ const Purple = (() => {
             }
         }
         saveStorage() {
+            /* so much of my music code relies on getting the queue as per guild though this feature and originally 
+            I intended the queue to be kept between restarts so thats why its lumped in with the rest of the server storage.
+            I'm too lazy to create a new method of storing the song queue for every guild so this quick fix is easier. */
             const str_obj = this.pb_storage;
-            str_obj.songs = [];
+            for (property in str_obj.guilds) {
+                str_obj.guilds[property].songs = []; // dont copy the queue into storage
+            }
             fs.writeFile("./pb_data/storage.json", JSON.stringify(str_obj), (err) => {
                 if (err) throw err;
                 console.log("Content saved successfuly!");
@@ -192,7 +197,9 @@ client.on("message", (msg) => {
         });
     }
     // if bot is mentioned
-    if (msg.mentions.has(client.user, {ignoreEveryone: true})) {
+    if (msg.mentions.has(client.user, {
+            ignoreEveryone: true
+        })) {
         purplelog.log(new purplelog.Entry({
             content: `${msg.author.username}: ${msg.content}`,
             type: "MENTION",
