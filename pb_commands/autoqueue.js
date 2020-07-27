@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 const cmd = {
     name: "autoqueue",
     category: "Music",
-    desc: "If this is enabled, I'll add new songs to the queue when the last song ends.",
+    desc: "Turns me into your personal DJ. I'll add a similar song when the last song in the queue ends.",
     usage: "autoqueue",
     hidden: false,
     modonly: false,
