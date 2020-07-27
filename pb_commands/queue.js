@@ -27,7 +27,7 @@ const cmd = {
         }
         if (!music.queIsEmpty(m)) {
 
-            let songQue = purple.getGuild(m.guild.id).songs;
+            let songQue = purple.getGuildTemp(m.guild.id).songs;
             var embed = new Discord.MessageEmbed();
             embed.setTitle("Song Queue 🎺");
             embed.setColor("PURPLE");

@@ -31,6 +31,7 @@ const Purple = (() => {
             let commandList = fs.readdirSync("./pb_commands");
             this.pb_storage = generateStorage(); // get storage.json
             this.commands = {};
+            this.guilds = {};
             this.client = client;
             for (let key of commandList) {
                 try {
@@ -46,13 +47,6 @@ const Purple = (() => {
             }
         }
         saveStorage() {
-            /* so much of my music code relies on getting the queue as per guild though this feature and originally 
-            I intended the queue to be kept between restarts so thats why its lumped in with the rest of the server storage.
-            I'm too lazy to create a new method of storing the song queue for every guild so this quick fix is easier. */
-            const str_obj = this.pb_storage;
-            for (property in str_obj.guilds) {
-                str_obj.guilds[property].songs = []; // dont copy the queue into storage
-            }
             fs.writeFile("./pb_data/storage.json", JSON.stringify(str_obj), (err) => {
                 if (err) throw err;
                 console.log("Content saved successfuly!");
@@ -63,6 +57,14 @@ const Purple = (() => {
             product.contentsaid = cmdString.replace(cmdName, "");
             product.args = product.contentsaid.split(" ");
             return product;
+        }
+        getGuildTemp(id){
+            if (!this.guilds[id]) {
+                this.guilds[id] = {
+                    songs: []
+                };
+            }
+            return this.guilds[id];
         }
         getGuild(id) {
             if (!this.pb_storage.guilds[id]) {

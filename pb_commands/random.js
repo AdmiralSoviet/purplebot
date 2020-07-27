@@ -36,8 +36,8 @@ const cmd = {
             const link = randomLink.link;
             music.addToQue(new music.pbSong({link: link, title: randomLink.title}), m);
 
-            if (link == purple.getGuild(m.guild.id).songs[0].link && purple.getGuild(m.guild.id).songs.length == 1) {
-                music.play(voiceChannel, purple.getGuild(m.guild.id).songs[0], m);
+            if (link == purple.getGuildTemp(m.guild.id).songs[0].link && purple.getGuildTemp(m.guild.id).songs.length == 1) {
+                music.play(voiceChannel, purple.getGuildTemp(m.guild.id).songs[0], m);
             }
         });
     }

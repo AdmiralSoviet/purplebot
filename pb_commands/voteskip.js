@@ -29,27 +29,27 @@ const cmd = {
         }
         let countMembers = Array.from(voiceChannel.members.values()).length - 1; // subtract one to remove bot from vote
         // if the queue doesn't exist or queue is empty
-        if (!purple.getGuild(m.guild.id).songs || !purple.getGuild(m.guild.id).songs[0]) {
+        if (!purple.getGuildTemp(m.guild.id).songs || !purple.getGuildTemp(m.guild.id).songs[0]) {
             return m.channel.send(":trumpet: Nothing is playing!");
         }
-        if (voiceChannel != purple.getGuild(m.guild.id).songs[0].channel)
+        if (voiceChannel != purple.getGuildTemp(m.guild.id).songs[0].channel)
             return m.reply("you have no say from over there ;^)");
-        if (!purple.getGuild(m.guild.id).songs[0].checkVoted(m.author.id)) {
+        if (!purple.getGuildTemp(m.guild.id).songs[0].checkVoted(m.author.id)) {
             const requiredVote = Math.round(countMembers * 0.6); // 60% of vote required
-            purple.getGuild(m.guild.id).songs[0].skipCount += 1;
+            purple.getGuildTemp(m.guild.id).songs[0].skipCount += 1;
             purplelog.log(new purplelog.Entry({
-                content: `VOTES: ${purple.getGuild(m.guild.id).songs[0].skipCount}/${requiredVote}`,
+                content: `VOTES: ${purple.getGuildTemp(m.guild.id).songs[0].skipCount}/${requiredVote}`,
                 guild: m.guild,
                 type: "MUSIC"
             }));
             // if the vote succeeds
-            if (purple.getGuild(m.guild.id).songs[0].skipCount >= requiredVote) {
-                m.channel.send(":ballot_box: Enough people have voted to skip the song. (" + purple.getGuild(m.guild.id).songs[0].skipCount + "/" + requiredVote + ")");
+            if (purple.getGuildTemp(m.guild.id).songs[0].skipCount >= requiredVote) {
+                m.channel.send(":ballot_box: Enough people have voted to skip the song. (" + purple.getGuildTemp(m.guild.id).songs[0].skipCount + "/" + requiredVote + ")");
                 music.skip(m);
             } else {
                 // if the vote count isn't enough to skip yet.
-                purple.getGuild(m.guild.id).songs[0].alreadyVoted.push(m.author.id);
-                m.channel.send(":ballot_box: Your vote has been lodged! (" + purple.getGuild(m.guild.id).songs[0].skipCount + "/" + requiredVote + ")")
+                purple.getGuildTemp(m.guild.id).songs[0].alreadyVoted.push(m.author.id);
+                m.channel.send(":ballot_box: Your vote has been lodged! (" + purple.getGuildTemp(m.guild.id).songs[0].skipCount + "/" + requiredVote + ")")
             }
         } else {
             m.channel.send(":no_entry: You have already voted!");

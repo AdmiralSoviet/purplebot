@@ -28,21 +28,21 @@ const cmd = {
         if (!voiceChannel) {
             return m.reply('Please be in a voice channel first!');
         }
-        if (purple.getGuild(m.guild.id).songs[0]) {
-            if ((voiceChannel != purple.getGuild(m.guild.id).songs[0].channel) && purple.getGuild(m.guild.id).songs[0].channel.members.size > 1) {
-                return m.channel.send(`:musical_note: Sorry, still chillin' here in **${purple.getGuild(m.guild.id).songs[0].channel.name}**. Come join us!`);
+        if (purple.getGuildTemp(m.guild.id).songs[0]) {
+            if ((voiceChannel != purple.getGuildTemp(m.guild.id).songs[0].channel) && purple.getGuildTemp(m.guild.id).songs[0].channel.members.size > 1) {
+                return m.channel.send(`:musical_note: Sorry, still chillin' here in **${purple.getGuildTemp(m.guild.id).songs[0].channel.name}**. Come join us!`);
             }
         }
         // if link is detected run this
         if (ytdl.validateURL(content_args[1])) {
             music.addToQue(new music.pbSong({
                 link: content_clean,
-                scrape_info: (purple.getGuild(m.guild.id).songs.length > 0) ? true : false,
+                scrape_info: (purple.getGuildTemp(m.guild.id).songs.length > 0) ? true : false,
                 channel: voiceChannel
             }), m);
-            if (content_clean == purple.getGuild(m.guild.id).songs[0].link && purple.getGuild(m.guild.id).songs.length == 1) {
-                purple.getGuild(m.guild.id).songs[0].getInfo(() => {
-                    music.play(purple.getGuild(m.guild.id).songs[0], m);
+            if (content_clean == purple.getGuildTemp(m.guild.id).songs[0].link && purple.getGuildTemp(m.guild.id).songs.length == 1) {
+                purple.getGuildTemp(m.guild.id).songs[0].getInfo(() => {
+                    music.play(purple.getGuildTemp(m.guild.id).songs[0], m);
                 });
             }
         } else {
@@ -64,8 +64,8 @@ const cmd = {
                     title: results[0].title,
                     channel: voiceChannel
                 }), m);
-                if (link == purple.getGuild(m.guild.id).songs[0].link && purple.getGuild(m.guild.id).songs.length == 1) {
-                    music.play(purple.getGuild(m.guild.id).songs[0], m);
+                if (link == purple.getGuildTemp(m.guild.id).songs[0].link && purple.getGuildTemp(m.guild.id).songs.length == 1) {
+                    music.play(purple.getGuildTemp(m.guild.id).songs[0], m);
                 }
             });
         }
