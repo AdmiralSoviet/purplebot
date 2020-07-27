@@ -71,7 +71,7 @@ module.exports = ((purple) => {
                 purplelog.log("[MUSIC] Playing next song in queue...", message.guild, false)
                 music_obj.play(purple.getGuildTemp(message.guild.id).songs[0], message); // play next song
             } else {
-                if (purple.getGuildTemp(message.guild.id).autoQueue === true && voiceChannel.members.size > 1) {
+                if (purple.getGuild(message.guild.id).autoQueue === true && voiceChannel.members.size > 1) {
                     message.channel.send(":musical_keyboard: Keeping the party going...");
                     music_obj.autoPlay(lastSong, message); // add another song from the last youtube video's related video list
                 } else {
@@ -155,8 +155,8 @@ module.exports = ((purple) => {
             })
             .catch(err => {
                 message.channel.send(`:no_entry_sign: ${err} :(`);
-                if (purple.getGuildTemp(message.guild.id).autoQueue) {
-                    purple.getGuildTemp(message.guild.id).autoQueue = false;
+                if (purple.getGuild(message.guild.id).autoQueue) {
+                    purple.getGuild(message.guild.id).autoQueue = false;
                     message.channel.send(":japanese_goblin: Turned off the autoqueue since something is going wrong");
                 }
                 stoppedPlaying(pbSong.channel, message);
