@@ -58,7 +58,7 @@ const Purple = (() => {
             product.args = product.contentsaid.split(" ");
             return product;
         }
-        getGuildTemp(id){
+        getGuildTemp(id) {
             if (!this.guilds[id]) {
                 this.guilds[id] = {
                     songs: []
@@ -72,8 +72,7 @@ const Purple = (() => {
                     users: {},
                     autoQueue: false
                 };
-                this.saveStorage();
-                purplelog.log(`Wrote new guild to storage.json (${id})`);
+                purplelog.log(`Detected new guild in storage.json (${id})`);
             }
             return this.pb_storage.guilds[id];
         }
