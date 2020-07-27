@@ -94,7 +94,7 @@ module.exports = ((purple) => {
                 const next = x.related_videos[0];
                 if (!next) {
                     message.channel.send(`:japanese_goblin: Looked for songs like this one and found nothing, sorry`); // try again if there's no related videos
-                    voiceChannel.leave(); // leave channel
+                    message.member.voice.channel.leave(); // leave channel
                     return false;
                 }
                 const new_song = new pbSong({
