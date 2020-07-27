@@ -77,7 +77,7 @@ module.exports = ((purple) => {
                     music_obj.autoPlay(lastSong, message); // add another song from the last youtube video's related video list
                 } else {
                     purplelog.log("[MUSIC] Finished playing all songs in the queue!", message.guild, false);
-                    message.channel.send(":musical_note: Finished playing all songs in the queue (use the 'more' command for suggested songs)."); // we're done here.
+                    message.channel.send(":musical_note: Finished playing all songs in the queue (use the 'more' command for more songs)."); // we're done here.
                     voiceChannel.leave(); // leave channel
                 }
             }

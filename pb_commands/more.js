@@ -12,6 +12,7 @@ const cmd = {
     exec: function (opts = {}) {
         const {
             m = m,
+            client = client,
                 music = music,
                 config = config,
                 purple = purple
@@ -30,14 +31,17 @@ const cmd = {
                 return m.channel.send("Can't think of anything right now, try running some songs first?");
             }
             let list = new Discord.MessageEmbed();
-            list.setTitle(`More like: ${song.title}`);
-            list.setColor("COLOR_PURPLE");
-            list.setDescription(`This is a list of videos related to the last/current played song. You can use the '${config.prefix}autoqueue' command to play suggested songs automatically.`);
+            list.setTitle(song.title);
+            list.setURL(song.link);
+            list.setAuthor(`More videos like:`, client.user.displayAvatarURL());
+            list.setColor("PURPLE");
+            list.setDescription(`This is a list of videos related to the last/current played song. You can use the **'${config.prefix}autoqueue'** command to play suggested songs automatically.`);
             ytdl.getBasicInfo(song.link)
                 .then((x) => {
-                    list.setThumbnail(x.thumbnail_url);
-                    x.related_videos.forEach((v) => {
-                        list.addField(v.title, `By ${v.author}`);
+                    list.setThumbnail(x.videoDetails.thumbnail.thumbnails[x.videoDetails.thumbnail.thumbnails.length - 1].url);
+                    console.log()
+                    x.related_videos.slice(0, 5).forEach((v) => {
+                        list.addField(v.title, `By *${v.author}*`);
                     });
                     list.setTimestamp();
                     m.channel.send(list);
