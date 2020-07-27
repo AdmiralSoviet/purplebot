@@ -43,7 +43,7 @@ module.exports = ((purple) => {
                 }
                 egOut.title = info.player_response.videoDetails.title;
                 egOut.author = info.player_response.videoDetails.author;
-                egOut.length_minutes = (info.videoDetails.lengthSeconds / 60).toFixed(2);
+                egOut.length_minutes = (info.player_response.videoDetails.lengthSeconds / 60).toFixed(2);
                 if (callback)
                     callback(info);
             });
