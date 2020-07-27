@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const ytdl = require("ytdl-core");
-const yousearch = require("youtube-search");
 const config = require("./pb_data/config");
 const purplelog = require("./purplelog.js");
 
