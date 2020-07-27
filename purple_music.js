@@ -93,7 +93,9 @@ module.exports = ((purple) => {
             .then((x) => {
                 const next = x.related_videos[0];
                 if (!next) {
-                    return message.channel.send(`:japanese_goblin: Looked for songs like this one and found nothing, soz`); // try again if there's no related videos
+                    message.channel.send(`:japanese_goblin: Looked for songs like this one and found nothing, sorry`); // try again if there's no related videos
+                    voiceChannel.leave(); // leave channel
+                    return false;
                 }
                 const new_song = new pbSong({
                     link: `https://www.youtube.com/watch?v=${next.id}`,
