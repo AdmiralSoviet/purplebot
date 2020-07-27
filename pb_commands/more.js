@@ -38,7 +38,10 @@ const cmd = {
             list.setDescription(`This is a list of videos related to the last/current played song. You can use the **'${config.prefix}autoqueue'** command to play suggested songs automatically.`);
             ytdl.getBasicInfo(song.link)
                 .then((x) => {
-                    list.setThumbnail(x.videoDetails.thumbnail.thumbnails[x.videoDetails.thumbnail.thumbnails.length - 1].url);
+                    if(x.videoDetails.thumbnail)
+                        list.setThumbnail(x.videoDetails.thumbnail.thumbnails[x.videoDetails.thumbnail.thumbnails.length - 1].url);
+                    else
+                        list.setThumbnail(x.thumbnail_url);
                     console.log()
                     x.related_videos.slice(0, 5).forEach((v) => {
                         list.addField(v.title, `By *${v.author}*`);
