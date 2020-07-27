@@ -39,6 +39,9 @@ const cmd = {
             ytdl.getBasicInfo(song.link)
                 .then((x) => {
                     list.setThumbnail(x.playerResponse.videoDetails.thumbnail.thumbnails[x.playerResponse.videoDetails.thumbnail.thumbnails.length - 1].url);
+                    if (x.related_videos.length <= 0) {
+                        list.addField("Nothing found!");
+                    }
                     x.related_videos.slice(0, 5).forEach((v) => {
                         list.addField(v.title, `By *${v.author}*`);
                     });

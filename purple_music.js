@@ -92,8 +92,8 @@ module.exports = ((purple) => {
         ytdl.getBasicInfo(song.link)
             .then((x) => {
                 const next = x.related_videos[0];
-                if (x.related_videos.length = 0) {
-                    return music_obj.autoPlay(song, message); // try again if there's no related videos
+                if (next.length == 0) {
+                    return message.channel.send(`:japanese_goblin: Looked for songs like this one and found nothing, soz`); // try again if there's no related videos
                 }
                 const new_song = new pbSong({
                     link: `https://www.youtube.com/watch?v=${next.id}`,
