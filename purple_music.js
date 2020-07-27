@@ -67,6 +67,7 @@ module.exports = ((purple) => {
     function stoppedPlaying(voiceChannel, message) {
         try {
             const lastSong = purple.getGuildTemp(message.guild.id).songs.splice(0, 1)[0]; // delete from queue
+            purple.getGuildTemp(message.guild.id).lastSong = lastSong; // copy into memory
             if (!music_obj.queIsEmpty(message)) {
                 purplelog.log("[MUSIC] Playing next song in queue...", message.guild, false)
                 music_obj.play(purple.getGuildTemp(message.guild.id).songs[0], message); // play next song
@@ -76,7 +77,7 @@ module.exports = ((purple) => {
                     music_obj.autoPlay(lastSong, message); // add another song from the last youtube video's related video list
                 } else {
                     purplelog.log("[MUSIC] Finished playing all songs in the queue!", message.guild, false);
-                    message.channel.send(":musical_note: Finished playing all songs in the queue."); // we're done here.
+                    message.channel.send(":musical_note: Finished playing all songs in the queue (use the 'more' command for suggested songs)."); // we're done here.
                     voiceChannel.leave(); // leave channel
                 }
             }
