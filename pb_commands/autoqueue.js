@@ -17,9 +17,10 @@ const cmd = {
         if (!m.guild || !m.member) {
             return m.channel.send(":no_entry: This command must be sent in a server!");
         }
-        purple.getGuild(m.guild.id).autoQueue = purple.getGuild(m.guild.id).autoQueue ? false : true;
+        const guild = purple.getGuild(m.guild.id);
+        guild.autoQueue = guild.autoQueue ? false : true;
         purple.saveStorage();
-        m.channel.send(`:white_check_mark: Toggled to **${new String(purple.getGuild(m.guild.id).autoQueue).toUpperCase()}**`);
+        m.channel.send(`:white_check_mark: Toggled to **${new String(guild.autoQueue).toUpperCase()}**`);
     }
 }
 

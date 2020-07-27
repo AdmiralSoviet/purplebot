@@ -70,8 +70,7 @@ const Purple = (() => {
             if (!this.pb_storage.guilds[id]) {
                 this.pb_storage.guilds[id] = {
                     users: {},
-                    autoQueue: false,
-                    songs: []
+                    autoQueue: false
                 };
                 this.saveStorage();
                 purplelog.log(`Wrote new guild to storage.json (${id})`);
