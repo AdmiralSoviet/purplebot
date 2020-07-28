@@ -157,7 +157,7 @@ module.exports = ((purple) => {
                 const embed = new Discord.MessageEmbed();
                 embed.setTitle(pbSong.title);
                 embed.setURL(pbSong.link);
-                embed.setAuthor("Now playing ", purple.client.user.displayAvatarURL(), `https://nikgo.me/purple`);
+                embed.setAuthor(`Now playing - ${Math.round(pbSong.length_minutes)} mins`, purple.client.user.displayAvatarURL(), `https://nikgo.me/purple`);
                 embed.setThumbnail(pbSong.thumbnail);
                 embed.setColor("RANDOM");
                 embed.setFooter(`By ${pbSong.author}`);
