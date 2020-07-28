@@ -14,6 +14,7 @@ module.exports = ((purple) => {
                     length_seconds = 0,
                     length_minutes = (length_seconds / 60).toFixed(2),
                     skipCount = 0,
+                    thumbnail = "https://techcrunch.com/wp-content/uploads/2017/08/youtube-new-logo.png",
                     alreadyVoted = [],
                     scrape_info = true,
                     connection = null,
@@ -24,6 +25,7 @@ module.exports = ((purple) => {
             this.skipCount = skipCount;
             this.author = author;
             this.alreadyVoted = alreadyVoted;
+            this.thumbnail = thumbnail;
             this.channel = channel;
             this.length_seconds = length_seconds;
             this.length_minutes = length_minutes;
@@ -40,6 +42,7 @@ module.exports = ((purple) => {
                 }
                 egOut.title = info.player_response.videoDetails.title;
                 egOut.author = info.player_response.videoDetails.author;
+                egOut.thumbnail = info.playerResponse.videoDetails.thumbnail.thumbnails[info.playerResponse.videoDetails.thumbnail.thumbnails.length - 1].url;
                 egOut.length_minutes = (info.player_response.videoDetails.lengthSeconds / 60).toFixed(2);
                 if (callback)
                     callback(info);
@@ -70,11 +73,11 @@ module.exports = ((purple) => {
                 music_obj.play(purple.getGuildTemp(message.guild.id).songs[0], message); // play next song
             } else {
                 if (purple.getGuild(message.guild.id).autoQueue === true && voiceChannel.members.size > 1) {
-                    message.channel.send(":musical_keyboard: Keeping the party going... (autoqueue command to toggle)");
+                    message.channel.send(`:musical_keyboard: Keeping the party going... *(**'${config.prefix}autoqueue'** command to toggle)*`);
                     music_obj.autoPlay(lastSong, message); // add another song from the last youtube video's related video list
                 } else {
                     purplelog.log("[MUSIC] Finished playing all songs in the queue!", message.guild, false);
-                    message.channel.send(":musical_note: Finished playing all songs in the queue (use the 'more' command for more songs)."); // we're done here.
+                    message.channel.send(":musical_note: Finished playing all songs in the queue."); // we're done here.
                     voiceChannel.leave(); // leave channel
                 }
             }
@@ -97,10 +100,13 @@ module.exports = ((purple) => {
                 const new_song = new pbSong({
                     link: `https://www.youtube.com/watch?v=${next.id}`,
                     title: next.title,
+                    author: next.author,
                     channel: song.channel
                 }); // generate new pbsong
-                music_obj.addToQue(new_song, message); // add it to the queue
-                music_obj.play(new_song, message); // play it
+                new_song.getInfo(() => {
+                    music_obj.addToQue(new_song, message); // add it to the queue
+                    music_obj.play(new_song, message); // play it
+                });
             });
     }
 
@@ -148,13 +154,22 @@ module.exports = ((purple) => {
                     quality: 'highestaudio'
                 });
                 const dispatcher = connection.play(stream, streamOptions);
+                const embed = new Discord.MessageEmbed();
+                embed.setTitle(pbSong.title);
+                embed.setURL(pbSong.link);
+                embed.setAuthor("Now playing ", purple.client.user.displayAvatarURL(), `https://nikgo.me/purple`);
+                embed.setThumbnail(pbSong.thumbnail);
+                embed.setColor("RANDOM");
+                embed.setFooter(`By ${pbSong.author}`);
+                embed.setTimestamp();
                 dispatcher.on('finish', () => {
                     // play next video
                     stoppedPlaying(pbSong.channel, message);
                 });
                 pbSong.connection = dispatcher;
                 purplelog.log("[MUSIC] Joining channel", message.guild, false);
-                message.channel.send(`:musical_note: Now playing **${pbSong.title}**`);
+
+                message.channel.send(embed);
             })
             .catch(err => {
                 message.channel.send(`:no_entry_sign: ${err} :(`);

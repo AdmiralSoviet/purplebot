@@ -59,13 +59,16 @@ const cmd = {
                     return m.channel.send(`:no_entry: Could not add song (${err}).`);
                 }
                 const link = results[0].link;
-                music.addToQue(new music.pbSong({
+                const new_song = new music.pbSong({
                     link: link,
                     title: results[0].title,
                     channel: voiceChannel
-                }), m);
+                });
+                music.addToQue(new_song, m);
                 if (link == purple.getGuildTemp(m.guild.id).songs[0].link && purple.getGuildTemp(m.guild.id).songs.length == 1) {
-                    music.play(purple.getGuildTemp(m.guild.id).songs[0], m);
+                    purple.getGuildTemp(m.guild.id).songs[0].getInfo(()=>{
+                        music.play(purple.getGuildTemp(m.guild.id).songs[0], m); // get info first
+                    });   
                 }
             });
         }
