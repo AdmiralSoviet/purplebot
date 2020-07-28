@@ -42,8 +42,8 @@ const cmd = {
                     if (x.related_videos.length <= 0) {
                         list.addField("Nothing found!");
                     }
-                    x.related_videos.slice(0, 5).forEach((v) => {
-                        list.addField(v.title, `By *${v.author}*`);
+                    x.related_videos.slice(0, 5).forEach((v, i) => {
+                        list.addField(`${i+1}. ${v.title}`, `By *${v.author}*`);
                     });
                     list.setTimestamp();
                     m.channel.send(list);
