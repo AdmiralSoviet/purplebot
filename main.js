@@ -219,8 +219,9 @@ client.on("message", (msg) => {
         } else {
             const rep = [":eggplant:", ":eyes:", ":robot:", ":heart:", "wow", "no u", ":thinking:"];
             if (msg.guild.emojis.cache.size == 1) {
-                if (!v.animated)
-                    rep.push(msg.guild.emojis.cache.first());
+                const emoji = msg.guild.emojis.cache.first();
+                if (!emoji.animated)
+                    rep.push(emoji);
             } else {
                 msg.guild.emojis.cache.random(rep.length).forEach((v) => {
                     if (v.animated)
