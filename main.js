@@ -218,15 +218,20 @@ client.on("message", (msg) => {
             msg.channel.send(thanks[Math.floor(Math.random() * thanks.length)]);
         } else {
             const rep = [":eggplant:", ":eyes:", ":robot:", ":heart:", "wow", "no u", ":thinking:"];
-            msg.guild.emojis.cache.random(rep.length).forEach((v) => {
-                if (v.animated)
-                    return false;
-                purplelog.log(new purplelog.Entry({
-                    content: `Added ${v.toString()} to possible responses.`,
-                    guild: msg.guild
-                }));
-                rep.push(v.toString());
-            });
+            if (msg.guild.emojis.cache.size == 1) {
+                if (!v.animated)
+                    rep.push(msg.guild.emojis.cache.first());
+            } else {
+                msg.guild.emojis.cache.random(rep.length).forEach((v) => {
+                    if (v.animated)
+                        return false;
+                    purplelog.log(new purplelog.Entry({
+                        content: `Added ${v.toString()} to possible responses.`,
+                        guild: msg.guild
+                    }));
+                    rep.push(v.toString());
+                });
+            }
             msg.channel.send(rep[Math.floor(Math.random() * rep.length)]);
         }
         return true;
