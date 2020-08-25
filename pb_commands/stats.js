@@ -19,6 +19,7 @@ const cmd = {
         embed.setTitle("PurpleBot Stats");
         embed.setThumbnail(client.user.displayAvatarURL());
         embed.addField("Uptime: ", ((client.uptime / 1000) / 60).toFixed(2) + " minute(s)");
+        embed.addField("Voice Connections: ", client.voice.connections.size);
         embed.addField("Servers Running: ", client.guilds.cache.array().length);
         embed.setTimestamp();
         console.log(`User '${m.author.username}' has requested stats.`);
