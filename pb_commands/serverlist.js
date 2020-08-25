@@ -11,33 +11,37 @@ const cmd = {
     exec: function (opts = {}) {
         const {
             m = m,
-            client = client,
+                client = client,
         } = opts;
 
-        client.guilds.cache.tap((v) => {
-            const embed = new Discord.MessageEmbed();
-            embed.setTitle(v.name);
-            embed.setThumbnail(v.iconURL);
-            embed.setColor("RANDOM");
-            embed.addField("Server ID:", v.id, true);
-            embed.addField("Owner ID:", v.ownerID, true);
-            embed.addField("Region:", v.region, true);
-            embed.addField("Members:", v.memberCount, true);
-            embed.addField("Member Status:",`
+        client.guilds.cache.each((v) => {
+            if (v.available == true) {
+                const embed = new Discord.MessageEmbed();
+                embed.setTitle(v.name);
+                embed.setThumbnail(v.iconURL());
+                embed.setColor("RANDOM");
+                embed.addField("Server ID:", v.id, true);
+                embed.setAuthor(`${v.owner.user.username}#${v.owner.user.discriminator}`, v.owner.user.displayAvatarURL());
+                embed.addField("Owner ID:", v.ownerID, true);
+                embed.addField("Region:", v.region, true);
+                embed.addField("Members:", v.memberCount, true);
+                embed.addField("Member Status:", `
                 Online         -> ${v.members.cache.filter(x => x.presence.status == "online").array().length}
                 Idle           -> ${v.members.cache.filter(x => x.presence.status == "idle").array().length}
                 Do Not Disturb -> ${v.members.cache.filter(x => x.presence.status == "dnd").array().length}
                 Offline        -> ${v.members.cache.filter(x => x.presence.status == "offline").array().length}
             `);
-            embed.addField("More Information:", `
-            Created: ${v.createdAt}
-            Roles: ${v.roles.array().length}
-            Text Channels: ${v.channels.filter(x => x.type == "text").array().length}
-            Voice Channels: ${v.channels.filter(x => x.type == "voice").array().length}
+                embed.addField("More Information:", `
+            Roles: ${v.roles.cache.array().length}
+            Text Channels: ${v.channels.cache.filter(x => x.type == "text").array().length}
+            Voice Channels: ${v.channels.cache.filter(x => x.type == "voice").array().length}
             `);
-            embed.setTimestamp();
-            m.channel.send(embed)
-                .then(message => message.delete(client.guilds.array().length * 40000));
+                embed.setFooter(`Created on ${v.createdAt}`);
+                m.channel.send(embed)
+                    .then(message => message.delete({
+                        timeout: client.guilds.cache.size * 40000
+                    }));
+            }
         })
     }
 }
