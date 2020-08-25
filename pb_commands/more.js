@@ -5,7 +5,7 @@ const cmd = {
     name: "more",
     category: "Music",
     desc: "Makes a list of recommended songs based on the last or current song in queue.",
-    usage: "queue",
+    usage: "more",
     hidden: false,
     modonly: false,
     devonly: false,
