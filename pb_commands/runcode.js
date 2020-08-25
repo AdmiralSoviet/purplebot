@@ -11,13 +11,17 @@ const cmd = {
     exec: function (opts = {}) {
         const {
             m = m,
-            client = client,
-            content_clean = content_clean
+                client = client,
+                content_clean = content_clean
         } = opts;
         m.delete();
-        console.log("[WARN] Running runcode command, super dangerous...");
-        m.author.send(`Result of running function: ${eval(content_clean)}`);
+        console.log("[WARN] Running runcode command");
+        try {
+            m.author.send(`Result of running function: ${eval(content_clean)}`);
+        } catch (err) {
+            m.author.send(`${err}`);
+        }
     }
 }
 
-module.exports = cmd; 
+module.exports = cmd;
