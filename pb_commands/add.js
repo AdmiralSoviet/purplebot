@@ -3,10 +3,10 @@ const ytdl = require("ytdl-core");
 const yousearch = require("youtube-search");
 
 const cmd = {
-    name: "addsong",
+    name: "add",
     category: "Music",
     desc: "Adds the requested item to the song queue and plays it if the queue is already empty.",
-    usage: "addsong <search term or link>",
+    usage: "add <search term or link>",
     hidden: false,
     modonly: false,
     devonly: false,
