@@ -17,6 +17,7 @@ module.exports = ((purple) => {
                     thumbnail = "https://techcrunch.com/wp-content/uploads/2017/08/youtube-new-logo.png",
                     alreadyVoted = [],
                     scrape_info = true,
+                    related_videos = [],
                     connection = null,
                     channel = null
             } = props;
@@ -29,6 +30,7 @@ module.exports = ((purple) => {
             this.channel = channel;
             this.length_seconds = length_seconds;
             this.length_minutes = length_minutes;
+            this.related_videos = related_videos;
             this.connection = connection;
             if (scrape_info) {
                 this.getInfo();
@@ -36,17 +38,19 @@ module.exports = ((purple) => {
         }
         getInfo(callback) {
             const egOut = this;
-            ytdl.getBasicInfo(this.link, (__, info) => {
-                if (!info) {
-                    return false;
-                }
-                egOut.title = info.player_response.videoDetails.title;
-                egOut.author = info.player_response.videoDetails.author;
-                egOut.thumbnail = info.playerResponse.videoDetails.thumbnail.thumbnails[info.playerResponse.videoDetails.thumbnail.thumbnails.length - 1].url;
-                egOut.length_minutes = (info.player_response.videoDetails.lengthSeconds / 60).toFixed(2);
-                if (callback)
-                    callback(info);
-            });
+            ytdl.getBasicInfo(this.link)
+                .then((info) => {
+                    if (!info) {
+                        return false;
+                    }
+                    egOut.title = info.videoDetails.title;
+                    egOut.author = info.videoDetails.author.name;
+                    egOut.related_videos = info.related_videos;
+                    egOut.thumbnail = info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url;
+                    egOut.length_minutes = (info.videoDetails.lengthSeconds / 60).toFixed(2);
+                    if (callback)
+                        callback(info);
+                });
         }
         // function to check if the user has already voted
         checkVoted(userID) {
@@ -89,25 +93,22 @@ module.exports = ((purple) => {
     music_obj.autoPlay = (song, message) => {
         if (!song)
             throw new Error("Expected song; *didn't get one*");
-        ytdl.getBasicInfo(song.link)
-            .then((x) => {
-                const next = x.related_videos[0];
-                if (!next) {
-                    message.channel.send(`:japanese_goblin: Looked for songs like this one and found nothing, sorry`); // try again if there's no related videos
-                    message.member.voice.channel.leave(); // leave channel
-                    return false;
-                }
-                const new_song = new pbSong({
-                    link: `https://www.youtube.com/watch?v=${next.id}`,
-                    title: next.title,
-                    author: next.author,
-                    channel: song.channel
-                }); // generate new pbsong
-                new_song.getInfo(() => {
-                    music_obj.addToQue(new_song, message); // add it to the queue
-                    music_obj.play(new_song, message); // play it
-                });
-            });
+        const next = song.related_videos[0];
+        if (!next) {
+            message.channel.send(`:japanese_goblin: Looked for songs like this one and found nothing, sorry`); // try again if there's no related videos
+            message.member.voice.channel.leave(); // leave channel
+            return false;
+        }
+        const new_song = new pbSong({
+            link: `https://www.youtube.com/watch?v=${next.id}`,
+            title: next.title,
+            author: next.author.name,
+            channel: song.channel
+        }); // generate new pbsong
+        new_song.getInfo(() => {
+            music_obj.addToQue(new_song, message); // add it to the queue
+            music_obj.play(new_song, message); // play it
+        });
     }
 
     music_obj.addToQue = (song, message) => {
@@ -146,7 +147,6 @@ module.exports = ((purple) => {
             seek: 0,
             volume: 0.5
         };
-
         pbSong.channel.join()
             .then(connection => {
                 let stream = ytdl(pbSong.link, {
