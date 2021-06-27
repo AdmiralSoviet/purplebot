@@ -126,7 +126,7 @@ const Purple = (() => {
                 m: msg,
                 config: config,
                 client: client,
-                content_clean: cmdArgs.contentsaid,
+                content_clean: cmdArgs.contentsaid.trim(),
                 content_args: cmdArgs.args,
                 cmd_list: this.commands,
                 purplelog: purplelog,
