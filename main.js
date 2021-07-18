@@ -118,8 +118,7 @@ const Purple = (() => {
             const perms = this.getPermissions(msg);
             // permission checking
             if ((command.modonly && !perms.mod) || (command.devonly && !perms.dev)) {
-                msg.reply("sorry but no");
-                return false;
+                throw new Error("Sorry, but no.");
             }
             const cmdArgs = this.processArgs(msg.content, command.name);
             command.exec({
@@ -244,7 +243,16 @@ client.on("message", (msg) => {
             type: "MESSAGE",
             guild: msg.guild
         }));
-        Purple.processCmd(msg);
+        try {
+            Purple.processCmd(msg);
+        } catch (err) {
+            msg.channel.send(`**:octagonal_sign: ${err}**`);
+            purplelog.log(new purplelog.Entry({
+                content: err,
+                guild: msg.guild,
+                type: "ERROR"
+            }));
+        }
     }
 });
 
